@@ -10,7 +10,7 @@ Piattaforme: PC/console overlay, o telefono (thumb zone, notch, 44px).
 
 Source obbligatorie: Game UI Database, Interface In Game. 2–3 titoli nominati nel brief.
 
-Vietato come scheletro: shadcn Card, bento, navbar SaaS, Inter, indigo, Lucide-as-weapon, Originkit hero, Aceternity shader.
+Vietato come scheletro: shadcn Card, bento, navbar SaaS, Inter, indigo, Lucide-as-weapon, Aceternity shader.
 
 Output: HTML/CSS mock. React solo se richiesto.
 
@@ -28,7 +28,7 @@ Output: mock HTML/CSS, poi React+Tailwind.
 
 Trigger: landing, hero, pricing, changelog visivo, waitlist, studio site.
 
-Prima la direzione (un materiale, un type pairing, un accento). Poi al massimo un blocco Originkit o Aceternity.
+Prima la direzione (un materiale, un type pairing, un accento). Poi al massimo un blocco Aceternity.
 
 Vietato: hero + 3 feature cards + gradient viola; bento 3×2 di default.
 

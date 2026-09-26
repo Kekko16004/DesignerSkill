@@ -1,6 +1,6 @@
 ---
 name: real-world-design
-description: Orchestrates anti-slop UI for games, phone apps, and marketing. Reverse-engineers real HUD/inventory/shop/skill-tree/menu references, locks tokens, shows 3–8 Variant Studio gallery variants for pick+comment, then ships HTML/CSS mocks (React+Tailwind for app/landing) with a Playwright visual QA loop. Use when the user asks for game UI, HUD, inventario, shop, skill tree, menu, mobile game UI, app telefono, landing, Originkit, 21st, visual companion, variant studio, or to kill generic AI-slop UI. Do not use for backend, copy-only, Unity UGUI, or Unreal UMG.
+description: Orchestrates anti-slop UI for games, phone apps, and marketing. Reverse-engineers real HUD/inventory/shop/skill-tree/menu references, locks tokens, shows 3–8 Variant Studio gallery variants for pick+comment, then ships HTML/CSS mocks (React+Tailwind for app/landing) with a Playwright visual QA loop. Use when the user asks for game UI, HUD, inventario, shop, skill tree, menu, mobile game UI, app telefono, landing, 21st, visual companion, variant studio, or to kill generic AI-slop UI. Do not use for backend, copy-only, Unity UGUI, or Unreal UMG.
 ---
 
 # Real-World Design
@@ -22,7 +22,7 @@ Config runtime: [config.json](config.json) (scelta all’install). Se manca, usa
 | [references/product-app.md](references/product-app.md) | Modalità `product-app` |
 | [references/marketing.md](references/marketing.md) | Modalità `marketing` |
 | [references/sources.md](references/sources.md) | Reverse engineering visivo |
-| [references/catalogs.md](references/catalogs.md) | Prima di 21st / Originkit / Beautiful UI / Aceternity |
+| [references/catalogs.md](references/catalogs.md) | Prima di 21st / Beautiful UI / Aceternity |
 | [references/motion.md](references/motion.md) | Animazioni, hover, popup |
 | [references/playwright-qa.md](references/playwright-qa.md) | Prima del loop screenshot |
 
@@ -70,7 +70,7 @@ Scrivi e blocca, poi procedi:
 
 Non inventare il layout. Apri **solo** le source abilitate in `config.json` → `sources` (Playwright + WebSearch). Estrai: gerarchia, anchors, radius, bordi, contrasto, tipografia, densità, stati.
 
-- `game` → Game UI Database + Interface In Game, se enabled. Vietato Originkit/Aceternity per il layout.
+- `game` → Game UI Database + Interface In Game, se enabled. Vietato Aceternity per il layout.
 - `product-app` → 2–3 app reali analoghe, poi cataloghi come pezzi.
 - `marketing` → direzione unica prima dei kit.
 
@@ -121,14 +121,13 @@ Quando il gate passa: ferma. Non aggiungere sezioni decorative, bento, testimoni
 
 **product-app** — app analoghe + Beautiful UI per stati agent + 21st come pezzi restyled. thinking-orbs solo per stato thinking, installato nel progetto target.
 
-**marketing** — una direzione. Poi al massimo un componente Originkit/Aceternity restyled sui token. Mai hero + 3 card + gradient indigo.
+**marketing** — una direzione. Poi al massimo un componente Aceternity restyled sui token. Mai hero + 3 card + gradient indigo.
 
 ## Cataloghi (dopo i token)
 
 Senza API key continua con Playwright + WebSearch. Non bloccarti. Rispetta `config.json` → `sources` e `modules`.
 
 - 21st: `search` / `get_component` / `search_logo`. Mai `generate` come path primario. In `game` solo loghi SVG.
-- Originkit: `search` / `list_components` gratis; `get_component` conta. Solo `marketing` e micro-FX `product-app`. Mai HUD.
 - Beautiful UI (beautifului.dev, non beUI): pattern thinking/stream/approval, restyle sui token.
 - Aceternity: solo `marketing` se enabled **e** il brief chiede motion da landing.
 - Agentation: opzionale, solo preview React. Playwright resta il loop.
@@ -139,7 +138,7 @@ Dettaglio tool: [references/catalogs.md](references/catalogs.md).
 ## Failure modes
 
 - Key MCP assenti → Playwright/web, cataloghi no-op.
-- Quota 21st/Originkit → `search` ok, skip `get_component`, screenshot del sito.
+- Quota 21st → `search` ok, skip `get_component`, screenshot del sito.
 - Catalogo SaaS usato per layout `game` → scarta il pezzo, rifai da reference di gioco.
 - Agentation su HTML puro → skip.
 - Studio morto → `studio.mjs start --project` di nuovo (stesso port/key). Non inventare un URL.

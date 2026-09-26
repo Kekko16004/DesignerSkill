@@ -5,7 +5,6 @@
     "variantStudio": true,
     "designCommand": true,
     "mcp21st": true,
-    "mcpOriginkit": true,
     "transitionsDev": true
   },
   "sources": {
@@ -13,7 +12,6 @@
     "interfaceInGame": true,
     "beautifulUi": true,
     "twentyFirst": true,
-    "originkit": true,
     "aceternity": false,
     "componentGallery": true,
     "gameIcons": true,

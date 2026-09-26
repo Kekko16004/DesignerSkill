@@ -39,7 +39,7 @@ Se GUIDB è lento/blocked: Interface In Game + immagini dal web. Non inventare.
 
 ## Vietato in game
 
-Originkit heroes, Aceternity bento, shadcn Card, Inter, indigo, Lucide sword, emoji, glass viola.
+Aceternity bento, shadcn Card, Inter, indigo, Lucide sword, emoji, glass viola.
 
 21st: solo `search_logo` / SVG. Mai `get_component` come layout di inventario.
 

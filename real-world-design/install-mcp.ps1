@@ -3,13 +3,12 @@ param(
   [switch]$Create,
   [switch]$Claude,
   [switch]$Generic,
-  [switch]$Skip21st,
-  [switch]$SkipOriginkit
+  [switch]$Skip21st
 )
 
 $ErrorActionPreference = "Stop"
 
-if ($Skip21st -and $SkipOriginkit) { return }
+if ($Skip21st) { return }
 
 function Get-EnvExpand([string]$name) {
   $v = [Environment]::GetEnvironmentVariable($name, "User")
@@ -19,9 +18,7 @@ function Get-EnvExpand([string]$name) {
 }
 
 $key21 = Get-EnvExpand "API_KEY_21ST"
-$keyOk = Get-EnvExpand "ORIGINKIT_API_KEY"
 $header21 = if ($key21) { $key21 } else { '${API_KEY_21ST}' }
-$headerOk = if ($keyOk) { $keyOk } else { '${ORIGINKIT_API_KEY}' }
 
 function Write-Utf8([string]$path, [string]$text) {
   $dir = Split-Path -Parent $path
@@ -48,27 +45,11 @@ $generic21 = @"
     }
 "@
 
-$genericOk = @"
-    "originkit": {
-      "url": "https://mcp.originkit.dev/mcp",
-      "headers": { "Authorization": "Bearer $headerOk" }
-    }
-"@
-
 $kilo21 = @"
     "21st": {
       "type": "remote",
       "url": "https://21st.dev/api/mcp",
       "headers": { "x-api-key": "$header21" },
-      "enabled": true
-    }
-"@
-
-$kiloOk = @"
-    "originkit": {
-      "type": "remote",
-      "url": "https://mcp.originkit.dev/mcp",
-      "headers": { "Authorization": "Bearer $headerOk" },
       "enabled": true
     }
 "@
@@ -82,13 +63,11 @@ function Inject-McpServers {
     [string]$Path,
     [string]$WrapperKey,
     [string]$Snippet21,
-    [string]$SnippetOk,
     [string]$EmptyDoc
   )
 
   $want = @()
   if (-not $Skip21st) { $want += @{ name = "21st"; snippet = $Snippet21 } }
-  if (-not $SkipOriginkit) { $want += @{ name = "originkit"; snippet = $SnippetOk } }
   if ($want.Count -eq 0) { return }
 
   $raw = Read-Raw $Path
@@ -136,7 +115,6 @@ function Inject-McpServers {
 
 $emptyParts = @()
 if (-not $Skip21st) { $emptyParts += $generic21 }
-if (-not $SkipOriginkit) { $emptyParts += $genericOk }
 $emptyInner = if ($emptyParts.Count) { Join-Snippets $emptyParts } else { "" }
 
 $emptyClaude = @"
@@ -149,7 +127,6 @@ $emptyInner
 
 $kiloEmptyParts = @()
 if (-not $Skip21st) { $kiloEmptyParts += $kilo21 }
-if (-not $SkipOriginkit) { $kiloEmptyParts += $kiloOk }
 $kiloInner = if ($kiloEmptyParts.Count) { Join-Snippets $kiloEmptyParts } else { "" }
 
 $emptyKilo = @"
@@ -162,9 +139,9 @@ $kiloInner
 "@
 
 if ($Claude -or $Generic) {
-  Inject-McpServers -Path $Target -WrapperKey "mcpServers" -Snippet21 $generic21 -SnippetOk $genericOk -EmptyDoc $emptyClaude
+  Inject-McpServers -Path $Target -WrapperKey "mcpServers" -Snippet21 $generic21 -EmptyDoc $emptyClaude
   return
 }
 
 if (-not (Test-Path -LiteralPath $Target) -and -not $Create) { return }
-Inject-McpServers -Path $Target -WrapperKey "mcp" -Snippet21 $kilo21 -SnippetOk $kiloOk -EmptyDoc $emptyKilo
+Inject-McpServers -Path $Target -WrapperKey "mcp" -Snippet21 $kilo21 -EmptyDoc $emptyKilo

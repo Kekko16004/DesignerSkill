@@ -27,7 +27,6 @@ Backup: WebSearch `site:interfaceingame.com [game]`. ArtStation solo se `sources
 
 ## Marketing / motion
 
-- `originkit` — https://www.originkit.dev/ — MCP `https://mcp.originkit.dev/mcp`
 - `twentyFirst` — https://21st.dev/ — MCP `https://21st.dev/api/mcp`
 - `aceternity` — https://ui.aceternity.com/ — solo marketing, no MCP in questo round
 - transitions.dev — skill companion se `modules.transitionsDev`

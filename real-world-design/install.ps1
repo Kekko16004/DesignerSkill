@@ -32,7 +32,6 @@ $moduleCatalog = [ordered]@{
   variantStudio   = @{ Label = "Variant Studio (live gallery pick + comments)"; Recommended = $true }
   designCommand   = @{ Label = "Kilo /design command";                       Recommended = $true }
   mcp21st         = @{ Label = "MCP 21st.dev";                               Recommended = $true }
-  mcpOriginkit    = @{ Label = "MCP Originkit";                              Recommended = $true }
   transitionsDev  = @{ Label = "transitions.dev companion skill";            Recommended = $true }
 }
 
@@ -41,7 +40,6 @@ $sourceCatalog = [ordered]@{
   interfaceInGame  = @{ Label = "Interface In Game  interfaceingame.com"; Recommended = $true }
   beautifulUi      = @{ Label = "Beautiful UI  beautifului.dev"; Recommended = $true }
   twentyFirst      = @{ Label = "21st.dev catalog"; Recommended = $true }
-  originkit        = @{ Label = "Originkit  originkit.dev"; Recommended = $true }
   aceternity       = @{ Label = "Aceternity UI  ui.aceternity.com"; Recommended = $false }
   componentGallery = @{ Label = "Component Gallery  component.gallery"; Recommended = $true }
   gameIcons        = @{ Label = "game-icons.net"; Recommended = $true }
@@ -118,14 +116,13 @@ function Write-Config([string]$Dest, $cfg) {
 }
 
 function Invoke-Mcp {
-  param([string]$Target, [string]$Mode, [switch]$Create, [bool]$Do21, [bool]$DoOk)
-  if (-not $Do21 -and -not $DoOk) { return }
+  param([string]$Target, [string]$Mode, [switch]$Create, [bool]$Do21)
+  if (-not $Do21) { return }
   $args = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $McpScript, "-Target", $Target)
   if ($Create) { $args += "-Create" }
   if ($Mode -eq "claude") { $args += "-Claude" }
   if ($Mode -eq "generic") { $args += "-Generic" }
   if (-not $Do21) { $args += "-Skip21st" }
-  if (-not $DoOk) { $args += "-SkipOriginkit" }
   & powershell @args
 }
 
@@ -172,7 +169,6 @@ $src = @{}
 foreach ($k in $sourceCatalog.Keys) { $src[$k] = $pickedSources -contains $k }
 
 if (-not $mod["mcp21st"]) { $src["twentyFirst"] = $false }
-if (-not $mod["mcpOriginkit"]) { $src["originkit"] = $false }
 
 $cfg = [ordered]@{
   version = 1
@@ -181,7 +177,6 @@ $cfg = [ordered]@{
     variantStudio   = [bool]$mod["variantStudio"]
     designCommand   = [bool]$mod["designCommand"]
     mcp21st         = [bool]$mod["mcp21st"]
-    mcpOriginkit    = [bool]$mod["mcpOriginkit"]
     transitionsDev  = [bool]$mod["transitionsDev"]
   }
   sources = [ordered]@{
@@ -189,7 +184,6 @@ $cfg = [ordered]@{
     interfaceInGame  = [bool]$src["interfaceInGame"]
     beautifulUi      = [bool]$src["beautifulUi"]
     twentyFirst      = [bool]$src["twentyFirst"]
-    originkit        = [bool]$src["originkit"]
     aceternity       = [bool]$src["aceternity"]
     componentGallery = [bool]$src["componentGallery"]
     gameIcons        = [bool]$src["gameIcons"]
@@ -221,8 +215,7 @@ foreach ($h in $pickedHosts) {
 }
 
 $do21 = [bool]$mod["mcp21st"]
-$doOk = [bool]$mod["mcpOriginkit"]
-if ($do21 -or $doOk) {
+if ($do21) {
   Write-Host ""
   Write-Host "--- MCP (env keys, no secrets written unless already in env) ---"
   foreach ($h in $pickedHosts) {
@@ -230,28 +223,28 @@ if ($do21 -or $doOk) {
       "kilo" {
         $kj = "$User\.config\kilo\kilo.json"
         $kjc = "$User\.config\kilo\kilo.jsonc"
-        if (Test-Path -LiteralPath $kj) { Invoke-Mcp -Target $kj -Mode "kilo" -Do21 $do21 -DoOk $doOk }
-        if (Test-Path -LiteralPath $kjc) { Invoke-Mcp -Target $kjc -Mode "kilo" -Do21 $do21 -DoOk $doOk }
+        if (Test-Path -LiteralPath $kj) { Invoke-Mcp -Target $kj -Mode "kilo" -Do21 $do21 }
+        if (Test-Path -LiteralPath $kjc) { Invoke-Mcp -Target $kjc -Mode "kilo" -Do21 $do21 }
         if (-not (Test-Path -LiteralPath $kj) -and -not (Test-Path -LiteralPath $kjc)) {
           New-Item -ItemType Directory -Force -Path "$User\.config\kilo" | Out-Null
-          Invoke-Mcp -Target $kj -Mode "kilo" -Create -Do21 $do21 -DoOk $doOk
+          Invoke-Mcp -Target $kj -Mode "kilo" -Create -Do21 $do21
         }
         Write-Host "OK MCP    Kilo"
       }
       "claude" {
-        Invoke-Mcp -Target "$User\.claude.json" -Mode "claude" -Do21 $do21 -DoOk $doOk
+        Invoke-Mcp -Target "$User\.claude.json" -Mode "claude" -Do21 $do21
         Write-Host "OK MCP    Claude ~/.claude.json"
       }
       "cursor" {
         New-Item -ItemType Directory -Force -Path "$User\.cursor" | Out-Null
-        Invoke-Mcp -Target "$User\.cursor\mcp.json" -Mode "generic" -Do21 $do21 -DoOk $doOk
+        Invoke-Mcp -Target "$User\.cursor\mcp.json" -Mode "generic" -Do21 $do21
         Write-Host "OK MCP    Cursor"
       }
       "antigravity" {
         New-Item -ItemType Directory -Force -Path "$User\.gemini\antigravity" | Out-Null
-        Invoke-Mcp -Target "$User\.gemini\antigravity\mcp.json" -Mode "generic" -Do21 $do21 -DoOk $doOk
+        Invoke-Mcp -Target "$User\.gemini\antigravity\mcp.json" -Mode "generic" -Do21 $do21
         New-Item -ItemType Directory -Force -Path "$User\.antigravity" | Out-Null
-        Invoke-Mcp -Target "$User\.antigravity\mcp_config.json" -Mode "generic" -Do21 $do21 -DoOk $doOk
+        Invoke-Mcp -Target "$User\.antigravity\mcp_config.json" -Mode "generic" -Do21 $do21
         Write-Host "OK MCP    Antigravity"
       }
     }
@@ -270,10 +263,9 @@ if ($mod["transitionsDev"]) {
 }
 
 Write-Host ""
-if ($do21 -or $doOk) {
+if ($do21) {
   Write-Host "Keys (installer never writes secrets):"
-  if ($do21) { Write-Host "  setx API_KEY_21ST `"your_key`"          https://21st.dev/settings/api-keys" }
-  if ($doOk) { Write-Host "  setx ORIGINKIT_API_KEY `"your_key`"     originkit.dev → Settings → API Integration" }
+  Write-Host "  setx API_KEY_21ST `"your_key`"          https://21st.dev/settings/api-keys"
   Write-Host "Then restart the IDE / CLI."
 }
 Write-Host "Without keys the skill still works (Playwright + WebSearch)."

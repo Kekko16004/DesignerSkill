@@ -15,16 +15,8 @@ Scrivi in 4 righe:
 
 - 1–2 siti reali dello stesso tono (non 10)
 - Component Gallery solo per nominare il componente (hero, pricing, navbar)
-- Originkit `search` → un componente motion se serve vita
 - Aceternity solo se il brief chiede esplicitamente motion da landing. Alto rischio slop (bento, shader, indigo): restyle aggressivo o skip
 - 21st: pezzi (navbar, pricing) restyled
-
-## Originkit
-
-- `search` / `list_components` non contano
-- `get_component` / `fetch` / `npx originkit add` contano (free ~10/giorno)
-- Mai HUD/inventario
-- Restyle variabili (color, radius, timing) sui token del brief
 
 ## Struttura minima
 

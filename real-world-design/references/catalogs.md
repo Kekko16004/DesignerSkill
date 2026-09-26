@@ -1,13 +1,12 @@
 # Catalogs and MCP
 
-Usare **dopo** brief + token. Senza key: skip, continua con Playwright. Se `config.json` disabilita `twentyFirst` / `originkit` / `aceternity` / `beautifulUi`, tratta quel catalogo come assente.
+Usare **dopo** brief + token. Senza key: skip, continua con Playwright. Se `config.json` disabilita `twentyFirst` / `aceternity` / `beautifulUi`, tratta quel catalogo come assente.
 
 Env (utente, non committare):
 
 - `API_KEY_21ST` — https://21st.dev/settings/api-keys
-- `ORIGINKIT_API_KEY` — Originkit Settings → API Integration
 
-Kilo: `~/.config/kilo/kilo.json` servers `21st` e `originkit`. Se `${VAR}` non si espande negli header, l'utente mette la key nel secret store / env del client.
+Kilo: `~/.config/kilo/kilo.json` server `21st`. Se `${VAR}` non si espande negli header, l'utente mette la key nel secret store / env del client.
 
 ## 21st.dev
 
@@ -24,20 +23,6 @@ Auth: header `x-api-key`
 | `generate` | AI gen | **Vietato come primo passo** |
 
 In `game`: solo `search_logo`. Layout da GUIDB.
-
-## Originkit
-
-Endpoint: `https://mcp.originkit.dev/mcp`  
-Auth: `Authorization: Bearer <key>`
-
-| Tool | Uso | Quota |
-|---|---|---|
-| `list_components` | Catalogo | No |
-| `search` | Keyword | No |
-| `get_component` | Source | Sì (~10/day free) |
-| `fetch` | By id | Sì |
-
-Solo `marketing` e micro-FX `product-app`. Mai HUD. Non c'è tool di generazione: è un catalogo curato.
 
 ## Beautiful UI
 

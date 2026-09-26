@@ -29,7 +29,7 @@ Beautiful UI: elapsed timer sul loader, non spinner CSS infinito senza contesto.
 
 ## Marketing
 
-Un movimento hero (Originkit **un** componente). Il resto fermo. Niente shader + particles + infinite marquee insieme.
+Un movimento hero (al massimo **un** componente). Il resto fermo. Niente shader + particles + infinite marquee insieme.
 
 ## Glow (game mandate)
 
