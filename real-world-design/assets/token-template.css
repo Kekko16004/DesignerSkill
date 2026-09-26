@@ -1,0 +1,33 @@
+:root {
+  --ink: #e8dcc8;
+  --ink-dim: #a89880;
+  --paper: #16110c;
+  --paper-2: #221a14;
+  --accent: #c4a35a;
+  --danger: #b33a2b;
+  --rare: #6ea8a0;
+  --border-outer: #0a0705;
+  --border-inner: #c9b896;
+  --radius: 0px;
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-body: "Source Serif 4", "Georgia", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --shadow-inset: inset 0 1px 0 color-mix(in srgb, var(--border-inner) 55%, transparent);
+  --shadow-drop: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --glow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
+  --move-in: 120ms;
+  --move-out: 140ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --pad: 12px;
+  --gap: 8px;
+  --safe-top: max(12px, env(safe-area-inset-top));
+  --safe-bottom: max(16px, env(safe-area-inset-bottom));
+  --hit: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --move-in: 1ms;
+    --move-out: 1ms;
+  }
+}
