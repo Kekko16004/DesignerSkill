@@ -8,7 +8,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 $SkillSrc = Split-Path -Parent $MyInvocation.MyCommand.Path
-$Root = Split-Path -Parent $SkillSrc
 $User = $env:USERPROFILE
 $McpScript = Join-Path $SkillSrc "install-mcp.ps1"
 
@@ -29,7 +28,7 @@ $hostCatalog = [ordered]@{
 }
 
 $moduleCatalog = [ordered]@{
-  variantStudio   = @{ Label = "Variant Studio (live gallery pick + comments)"; Recommended = $true }
+  variantStudio   = @{ Label = "Variant Studio skill (git clone Fonlogen/variant-studio)"; Recommended = $true }
   designCommand   = @{ Label = "Kilo /design command";                       Recommended = $true }
   mcp21st         = @{ Label = "MCP 21st.dev";                               Recommended = $true }
   transitionsDev  = @{ Label = "transitions.dev companion skill";            Recommended = $true }
@@ -92,17 +91,16 @@ function Read-Pick {
 function Copy-SkillTo([string]$Dest) {
   New-Item -ItemType Directory -Force -Path $Dest | Out-Null
   Copy-Item -Path (Join-Path $SkillSrc "*") -Destination $Dest -Recurse -Force
-  $legacy = Join-Path $Dest "scripts\visual-companion"
-  if (Test-Path -LiteralPath $legacy) {
-    try { Remove-Item -LiteralPath $legacy -Recurse -Force -ErrorAction Stop }
-    catch { Write-Host "WARN leftover visual-companion (locked) $legacy" }
+  # the studio now comes from the variant-studio skill: drop copies left by older installs
+  foreach ($old in @("scripts\studio.mjs", "scripts\ui", "assets\demo-round", "references\studio-manifest.md", "references\studio-platforms.md", "references\studio-frameworks.md")) {
+    $o = Join-Path $Dest $old
+    if (Test-Path -LiteralPath $o) { Remove-Item -LiteralPath $o -Recurse -Force -ErrorAction SilentlyContinue }
   }
   Write-Host "OK skill  $Dest"
 }
 
 function Copy-Cmd([string]$Dest) {
   $src = Join-Path $SkillSrc "command\design.md"
-  if (-not (Test-Path -LiteralPath $src)) { $src = Join-Path $Root "command\design.md" }
   if (-not (Test-Path -LiteralPath $src)) { return }
   New-Item -ItemType Directory -Force -Path $Dest | Out-Null
   Copy-Item -LiteralPath $src -Destination (Join-Path $Dest "design.md") -Force
@@ -192,6 +190,7 @@ $cfg = [ordered]@{
   }
   companion = [ordered]@{
     enabled        = [bool]$mod["variantStudio"]
+    autoInstall    = $false
     maxVariants    = 8
     askBeforeOpen  = $false
   }
@@ -212,6 +211,12 @@ foreach ($h in $pickedHosts) {
   if ($mod["designCommand"] -and $info.Cmd) {
     foreach ($c in @($info.Cmd)) { Copy-Cmd $c }
   }
+}
+
+if ($mod["variantStudio"]) {
+  Write-Host ""
+  Write-Host "--- Variant Studio (github.com/Fonlogen/variant-studio) ---"
+  & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $SkillSrc "scripts\install-variant-studio.ps1")
 }
 
 $do21 = [bool]$mod["mcp21st"]

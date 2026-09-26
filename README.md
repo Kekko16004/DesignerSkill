@@ -6,7 +6,7 @@ Da zero: placeholder verosimili. Su UI esistente: patch funzionante con dati/ico
 
 ## Install
 
-Guida: **[INSTALL.md](INSTALL.md)** / **[real-world-design/INSTALL.md](real-world-design/INSTALL.md)**
+Guida: **[real-world-design/INSTALL.md](real-world-design/INSTALL.md)**
 
 Doppio click (scegli host, moduli, siti):
 
@@ -30,6 +30,14 @@ setx API_KEY_21ST "la_tua_key"
 
 Riavvia l'IDE. Senza key la skill funziona (Playwright + WebSearch + Variant Studio). Serve Node ≥ 18 per lo studio.
 
+## Update
+
+```
+update.bat
+```
+
+`git pull` + reinstallazione con le scelte salvate (host, moduli, siti) e aggiornamento di `variant-studio`. Dalla copia installata: `real-world-design\scripts\update.bat` (se serve clona il repo in `%LOCALAPPDATA%\skill-repos`).
+
 ## Uso (Kilo)
 
 ```
@@ -47,9 +55,9 @@ real-world-design/SKILL.md
 real-world-design/config.json
 real-world-design/references/
 real-world-design/assets/
-real-world-design/scripts/studio.mjs
-real-world-design/scripts/ui/
-command/design.md
+real-world-design/scripts/install-variant-studio.bat
+real-world-design/scripts/install-variant-studio.ps1
+real-world-design/command/design.md
 real-world-design/install.bat
 real-world-design/install.ps1
 ```

@@ -1,12 +1,26 @@
 # Variant Studio
 
-Galleria live **dopo** mode, brief, reverse-engineering, token lock e anti-slop gate. Sostituisce Visual Companion. Lo script è `scripts/studio.mjs` (Node ≥ 18, zero dipendenze).
-
-Sotto, `STUDIO` = `node "<SKILL>/scripts/studio.mjs"`. Passa sempre `--project "<PROJECT>"` così tutto vive in `<project>/.variant-studio/` (aggiunto al `.gitignore` da solo).
+Galleria live **dopo** mode, brief, reverse-engineering, token lock e anti-slop gate. Usa la skill [`variant-studio`](https://github.com/Fonlogen/variant-studio) (Node ≥ 18, zero dipendenze), installata **accanto** a questa: `<VS>` = `<SKILL>/../variant-studio` (stessa cartella skills dell'host: `~/.claude/skills`, `~/.agents/skills`, `~/.config/kilo/skills`, …).
 
 Config: `config.json` → `companion.enabled`. Se `false`, salta e vai al mock.
 
-Dettaglio schema: [studio-manifest.md](studio-manifest.md). Harness: [studio-platforms.md](studio-platforms.md). React/Storybook: [studio-frameworks.md](studio-frameworks.md).
+## Se manca
+
+Prima di aprire lo studio controlla che esista `<VS>/scripts/studio.mjs`. Se non c'è:
+
+1. Dillo in una riga e consiglia di installarla: *"Variant Studio non è installato: lo installo? (clona l'ultima versione da GitHub accanto a real-world-design)"*.
+2. Se l'utente accetta, o `companion.autoInstall` è `true`, lancia l'installer e poi riprova:
+   ```powershell
+   & "<SKILL>/scripts/install-variant-studio.bat"
+   ```
+   Clona `https://github.com/Fonlogen/variant-studio` (o fa `git pull` se c'è già) in ogni cartella skills dove c'è `real-world-design`. Senza git scarica lo zip di `main`.
+3. Se rifiuta: salta lo studio, mostra le direzioni come mock HTML statici (`assets/mock-shell.html`) e fai scegliere in chat.
+
+Lo stesso `.bat` aggiorna all'ultima versione: lancialo se lo studio si comporta in modo diverso da quanto scritto qui.
+
+Sotto, `STUDIO` = `node "<VS>/scripts/studio.mjs"`. Passa sempre `--project "<PROJECT>"` così tutto vive in `<project>/.variant-studio/` (aggiunto al `.gitignore` da solo).
+
+Dettaglio schema, harness e React/Storybook: `<VS>/SKILL.md` e `<VS>/references/` (`manifest.md`, `platforms.md`, `frameworks.md`). Le regole di design qui sotto (kind, token, anti-slop) vincono su quelle generiche della skill.
 
 ## Quando
 
@@ -21,7 +35,7 @@ Cap `companion.maxVariants` (default **8**). Non fermarti a 3–4 se hai più id
 ## Avvio
 
 ```powershell
-node "<SKILL>/scripts/studio.mjs" start --project "<PROJECT>" --open
+node "<VS>/scripts/studio.mjs" start --project "<PROJECT>" --open
 ```
 
 Kilo: se il processo viene killato a fine comando, avvia con `background_process` (`persistent: true`) e `--foreground`, poi `status`. Serve `node` sul PATH.
@@ -47,17 +61,17 @@ Remote/container: `start --host 0.0.0.0 --url-host localhost`. Sandbox senza por
 2. Round nuovo:
 
 ```powershell
-node "<SKILL>/scripts/studio.mjs" new inventory-density --project "<PROJECT>" --kind page --viewports desktop --title "Inventory" --question "Which inventory density for PC NUI?" --variants a,b,c,d,e
+node "<VS>/scripts/studio.mjs" new inventory-density --project "<PROJECT>" --kind page --viewports desktop --title "Inventory" --question "Which inventory density for PC NUI?" --variants a,b,c,d,e
 ```
 
-3. Edita `round.json`: ogni variante ha `label` (nome dell’idea) e `notes` (reference + trade-off). Schema: [studio-manifest.md](studio-manifest.md).
+3. Edita `round.json`: ogni variante ha `label` (nome dell’idea) e `notes` (reference + trade-off). Schema: `<VS>/references/manifest.md`.
 4. Scrivi `<round>/<id>.html` col tool file (non heredoc). La galleria live-reloada. Placeholder “generating…” finché il file non c’è.
 5. Token del brief in `.variant-studio/global.css` **o** `<round>/_shared.css`. Copia le CSS variables lockate. In `existing`, linka CSS reale: `"head": ["/p/html/style.css"]`.
 6. Una riga all’utente: URL completo + cosa confronta + “seleziona (1–9), commenta elementi con C, poi Approva / Modifiche / Combina / Rifai”.
 7. **Aspetta.** Non chiudere il turno chiedendo la scelta in chat.
 
 ```powershell
-node "<SKILL>/scripts/studio.mjs" wait --project "<PROJECT>" --timeout 1800
+node "<VS>/scripts/studio.mjs" wait --project "<PROJECT>" --timeout 1800
 ```
 
 Bash/Kilo tool timeout **≥ 1800000** ms. Exit 2 = timeout: `STUDIO decision --project "<PROJECT>"` al turno dopo. Chat vince se l’utente scrive prima.

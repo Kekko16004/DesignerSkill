@@ -20,6 +20,7 @@
   },
   "companion": {
     "enabled": true,
+    "autoInstall": false,
     "maxVariants": 8,
     "askBeforeOpen": false
   }

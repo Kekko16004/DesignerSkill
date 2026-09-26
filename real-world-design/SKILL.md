@@ -1,6 +1,6 @@
 ---
 name: real-world-design
-description: Orchestrates anti-slop UI for games, phone apps, and marketing. Reverse-engineers real HUD/inventory/shop/skill-tree/menu references, locks tokens, shows 3–8 Variant Studio gallery variants for pick+comment, then ships HTML/CSS mocks (React+Tailwind for app/landing) with a Playwright visual QA loop. Use when the user asks for game UI, HUD, inventario, shop, skill tree, menu, mobile game UI, app telefono, landing, 21st, visual companion, variant studio, or to kill generic AI-slop UI. Do not use for backend, copy-only, Unity UGUI, or Unreal UMG.
+description: Orchestrates anti-slop UI for games, phone apps, and marketing. Reverse-engineers real HUD/inventory/shop/skill-tree/menu references, locks tokens, shows 3–8 Variant Studio gallery variants for pick+comment, then ships HTML/CSS mocks (React+Tailwind for app/landing) with a Playwright visual QA loop. Use when the user asks for game UI, HUD, inventario, shop, skill tree, menu, mobile game UI, app telefono, landing, 21st, variant studio, or to kill generic AI-slop UI. Do not use for backend, copy-only, Unity UGUI, or Unreal UMG.
 ---
 
 # Real-World Design
@@ -41,7 +41,7 @@ mode → brief → references (solo siti enabled) → tokens → anti-slop gate
   → optional Agentation
 ```
 
-Non saltare passi. Non scrivere UI prima dei token. Non aprire Variant Studio prima dei token. Non chiamare `generate` 21st come primo passo. Non usare Visual Companion.
+Non saltare passi. Non scrivere UI prima dei token. Non aprire Variant Studio prima dei token. Non chiamare `generate` 21st come primo passo.
 
 ### 1. Classifica la modalità
 
@@ -88,7 +88,7 @@ Leggi [references/anti-slop.md](references/anti-slop.md). Se 3+ ban matchano il 
 
 ### 6. Variant Studio (varianti)
 
-Se `companion.enabled` è `false`, salta. Altrimenti leggi [references/companion.md](references/companion.md) e apri **Variant Studio** (`scripts/studio.mjs`). Vietato Visual Companion / `scripts/visual-companion`.
+Se `companion.enabled` è `false`, salta. Altrimenti leggi [references/companion.md](references/companion.md) e apri **Variant Studio** (skill `variant-studio` accanto a questa: `../variant-studio/scripts/studio.mjs`). Se non è installata, consiglia di installarla e, se l'utente accetta, lancia `scripts/install-variant-studio.bat`.
 
 - 3–8 direzioni **sui token lockati**. Cap `companion.maxVariants` (default 8).
 - `kind`: HUD/NUI/inventario = `page` + viewport `desktop`. App telefono = `page` + `mobile`. Pezzo isolato = `component`.
@@ -143,6 +143,10 @@ Dettaglio tool: [references/catalogs.md](references/catalogs.md).
 - Agentation su HTML puro → skip.
 - Studio morto → `studio.mjs start --project` di nuovo (stesso port/key). Non inventare un URL.
 - `existing` trattato come `greenfield` → rifai con i dati reali.
+
+## Aggiornamento
+
+Se l'utente chiede di aggiornare la skill: `scripts/update.bat` (git pull del repo + reinstallazione con le scelte salvate in `config.json`; aggiorna anche `variant-studio`). Poi va riavviato il client.
 
 ## Fuori scope
 
