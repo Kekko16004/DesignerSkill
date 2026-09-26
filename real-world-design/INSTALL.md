@@ -76,7 +76,7 @@ Se 401: il client non espande `${}`. Incolla la key solo in quel file, mai in gi
 
 ## 5. Variant Studio
 
-Vive dentro la skill (`scripts/studio.mjs` + `scripts/ui/`). Pipeline: token → round 3–8 varianti in gallery → Approva / Modifiche / Combina / Rifai → implementazione.
+Non è più incluso: è la skill [`variant-studio`](https://github.com/Fonlogen/variant-studio), clonata accanto a `real-world-design` in ogni host (modulo `variantStudio`). Aggiorna all'ultima versione o installala a parte con `real-world-design\scripts\install-variant-studio.bat`. Se manca, la skill te lo dice e propone di installarla. Pipeline: token → round 3–8 varianti in gallery → Approva / Modifiche / Combina / Rifai → implementazione.
 
 Artifact: `<progetto>/.variant-studio/` (gitignore automatico se c’è git). URL sempre con `?k=`.
 

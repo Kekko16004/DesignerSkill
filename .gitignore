@@ -13,3 +13,6 @@ Desktop.ini
 .DS_Store
 .vscode/
 .idea/
+
+# variant-studio skill cloned by scripts/install-variant-studio.ps1
+variant-studio/

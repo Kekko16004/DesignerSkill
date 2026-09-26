@@ -47,8 +47,8 @@ real-world-design/SKILL.md
 real-world-design/config.json
 real-world-design/references/
 real-world-design/assets/
-real-world-design/scripts/studio.mjs
-real-world-design/scripts/ui/
+real-world-design/scripts/install-variant-studio.bat
+real-world-design/scripts/install-variant-studio.ps1
 real-world-design/command/design.md
 real-world-design/install.bat
 real-world-design/install.ps1
