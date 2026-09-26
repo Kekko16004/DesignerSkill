@@ -7,7 +7,7 @@ Skill anti-slop per HUD/inventario/shop, app telefono e landing. Include Variant
 Doppio click **oppure** da cmd:
 
 ```
-C:\Users\FRANCY\Desktop\DesignerSkill\real-world-design\install.bat
+<cartella del repo>\real-world-design\install.bat
 ```
 
 Ti chiede tre cose. Enter = consigliati (`*`). `all` / `none` / numeri (`1 3 4`).

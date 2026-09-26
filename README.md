@@ -6,7 +6,7 @@ Da zero: placeholder verosimili. Su UI esistente: patch funzionante con dati/ico
 
 ## Install
 
-Guida: **[INSTALL.md](INSTALL.md)** / **[real-world-design/INSTALL.md](real-world-design/INSTALL.md)**
+Guida: **[real-world-design/INSTALL.md](real-world-design/INSTALL.md)**
 
 Doppio click (scegli host, moduli, siti):
 
@@ -49,7 +49,7 @@ real-world-design/references/
 real-world-design/assets/
 real-world-design/scripts/studio.mjs
 real-world-design/scripts/ui/
-command/design.md
+real-world-design/command/design.md
 real-world-design/install.bat
 real-world-design/install.ps1
 ```

@@ -8,7 +8,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 $SkillSrc = Split-Path -Parent $MyInvocation.MyCommand.Path
-$Root = Split-Path -Parent $SkillSrc
 $User = $env:USERPROFILE
 $McpScript = Join-Path $SkillSrc "install-mcp.ps1"
 
@@ -102,7 +101,6 @@ function Copy-SkillTo([string]$Dest) {
 
 function Copy-Cmd([string]$Dest) {
   $src = Join-Path $SkillSrc "command\design.md"
-  if (-not (Test-Path -LiteralPath $src)) { $src = Join-Path $Root "command\design.md" }
   if (-not (Test-Path -LiteralPath $src)) { return }
   New-Item -ItemType Directory -Force -Path $Dest | Out-Null
   Copy-Item -LiteralPath $src -Destination (Join-Path $Dest "design.md") -Force
