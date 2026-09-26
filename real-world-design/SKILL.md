@@ -144,6 +144,10 @@ Dettaglio tool: [references/catalogs.md](references/catalogs.md).
 - Studio morto → `studio.mjs start --project` di nuovo (stesso port/key). Non inventare un URL.
 - `existing` trattato come `greenfield` → rifai con i dati reali.
 
+## Aggiornamento
+
+Se l'utente chiede di aggiornare la skill: `scripts/update.bat` (git pull del repo + reinstallazione con le scelte salvate in `config.json`; aggiorna anche `variant-studio`). Poi va riavviato il client.
+
 ## Fuori scope
 
 Unity UGUI, Unreal UMG, backend, copy-only, generazione 21st AI come primo passo.

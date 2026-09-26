@@ -30,6 +30,14 @@ setx API_KEY_21ST "la_tua_key"
 
 Riavvia l'IDE. Senza key la skill funziona (Playwright + WebSearch + Variant Studio). Serve Node ≥ 18 per lo studio.
 
+## Update
+
+```
+update.bat
+```
+
+`git pull` + reinstallazione con le scelte salvate (host, moduli, siti) e aggiornamento di `variant-studio`. Dalla copia installata: `real-world-design\scripts\update.bat` (se serve clona il repo in `%LOCALAPPDATA%\skill-repos`).
+
 ## Uso (Kilo)
 
 ```
