@@ -1,4 +1,4 @@
-# designer
+# DesignerSkill
 
 Global anti-slop UI skill for **websites**, **phone apps** and **game UI** (incl. FiveM NUI when asked). Real references instead of invented layouts, tokens before code, saved global styles, a **Variant Studio** gallery (3–8 variants, comments, pick), HTML/CSS mocks, automated anti-slop lint + Playwright QA, a reusable `DESIGN.md`, and translation of the approved preview to the target stack (plain HTML, React/Tailwind, React Native, Unity UI Toolkit, tokens for Flutter/SwiftUI/UGUI).
 
