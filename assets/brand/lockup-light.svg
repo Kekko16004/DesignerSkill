@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" width="300" height="64" role="img" aria-label="designer, anti-slop ui skill">
+  <path d="M7 24h15.5v5H12v26h10.5v5H7zM52 4h5v56H41.5v-5H52z" fill="#0b0b0b"/>
+  <rect x="22" y="31" width="20" height="22" fill="#ff6a1a"/>
+  <text x="78" y="36" font-family="'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-weight="600" font-size="31" letter-spacing="-0.6" fill="#0b0b0b">designer</text>
+  <text x="79" y="55" font-family="'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace" font-weight="500" font-size="11" letter-spacing="1.3" fill="#6b675f">ANTI-SLOP UI SKILL</text>
+</svg>
