@@ -33,11 +33,6 @@
 
 AI-generated UI tends to converge on the same thing: Inter, `rounded-xl`, an indigo gradient, a hero with three cards. **designer** is a skill for coding agents that refuses that default. It makes the agent reverse-engineer real products first, lock a token set before writing markup, show you 3–8 genuinely different directions in a live gallery, and only then build — with an automated anti-slop gate, visual QA, a written design spec and a translation step to the stack you actually ship.
 
-<p align="center">
-  <img src="docs/images/variant-studio.png" alt="Variant Studio gallery with six logo directions for this skill" width="900"><br>
-  <sub>The logo of this repo, designed with the skill: six directions in Variant Studio, two remixed, one approved (see <a href="DESIGN.md">DESIGN.md</a>).</sub>
-</p>
-
 ## Features
 
 | | |
@@ -181,11 +176,9 @@ designer/                 the skill
   evals/                  test prompts to re-run after changing the skill
   install.ps1 · update.ps1
 variant-studio/           git submodule (Fonlogen/variant-studio)
-assets/brand/             logo: SVG sources + PNG exports
-docs/images/              README images
+assets/brand/             logo: SVG sources, PNG exports, brand spec
 install.bat · update.bat  one-click shortcuts
 dependencies.json         external components
-DESIGN.md                 brand design spec
 ```
 
 ## Contributing
