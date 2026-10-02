@@ -7,6 +7,7 @@
     install.bat -Hosts kilo,claude -SkipModules mcp21st -SkipSources aceternity,artStation
     install.bat -StudioMode copy                  copy Variant Studio instead of linking it
     install.bat -StudioPath D:\variant-studio     use your own standalone Variant Studio folder
+    install.bat -Reuse                            repeat the last install's choices (~/.designer/install.json), no questions
 
   The skill is copied into each host's skills folder. External dependencies (dependencies.json) are fetched
   from GitHub only if you say yes; Variant Studio is linked (junction) to one standalone folder so update.bat
@@ -20,7 +21,8 @@ param(
   [string[]]$SkipSources,
   [string]$StudioPath,
   [ValidateSet("link", "copy")]
-  [string]$StudioMode = "link"
+  [string]$StudioMode = "link",
+  [switch]$Reuse
 )
 
 $ErrorActionPreference = "Stop"
@@ -31,8 +33,21 @@ $Root = Split-Path -Parent $SkillSrc
 $User = $env:USERPROFILE
 $McpScript = Join-Path $SkillSrc "install-mcp.ps1"
 $StudioRepo = "https://github.com/Fonlogen/variant-studio"
-$StudioDir = if ($StudioPath) { [IO.Path]::GetFullPath($StudioPath) } else { Join-Path $Root "variant-studio" }
 $DesignerHome = if ($env:DESIGNER_HOME) { $env:DESIGNER_HOME } else { Join-Path $User ".designer" }
+$LastInstall = Join-Path $DesignerHome "install.json"
+
+$reused = $null
+if ($Reuse) {
+  if (Test-Path -LiteralPath $LastInstall) {
+    $reused = Get-Content -Raw -LiteralPath $LastInstall | ConvertFrom-Json
+    if (-not $PSBoundParameters.ContainsKey("StudioMode") -and $reused.studioMode) { $StudioMode = $reused.studioMode }
+    if (-not $StudioPath -and $reused.studioPath) { $StudioPath = $reused.studioPath }
+  } else {
+    Write-Host "No previous install found ($LastInstall): using the recommended set."
+    $Quiet = $true
+  }
+}
+$StudioDir = if ($StudioPath) { [IO.Path]::GetFullPath($StudioPath) } else { Join-Path $Root "variant-studio" }
 
 if (-not (Test-Path -LiteralPath (Join-Path $SkillSrc "SKILL.md"))) { Write-Host "FAIL: SKILL.md missing in $SkillSrc"; exit 1 }
 
@@ -205,7 +220,10 @@ Write-Host "=== designer installer ==="
 Write-Host "Source: $SkillSrc"
 
 $split = { param($arr) @($arr | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ }) }
-if ($All) {
+if ($reused) {
+  $pickedHosts = @($reused.hosts); $pickedModules = @($reused.modules); $pickedSources = @($reused.sources)
+  Write-Host "Reusing the choices of the last install ($LastInstall)"
+} elseif ($All) {
   $pickedHosts = @($hostCatalog.Keys); $pickedModules = @($moduleCatalog.Keys); $pickedSources = @($sourceCatalog.Keys)
 } elseif ($Quiet -or $Hosts) {
   $pickedHosts = if ($Hosts) { & $split $Hosts } else { @($recHosts) }
@@ -220,6 +238,11 @@ if ($SkipSources) { $s = & $split $SkipSources; $pickedSources = @($pickedSource
 
 $pickedHosts = @($pickedHosts | ForEach-Object { if ($_ -eq "github") { "copilot" } else { $_ } } | Where-Object { $hostCatalog.Contains($_) } | Select-Object -Unique)
 if ($pickedHosts.Count -eq 0) { Write-Host "No hosts selected. Abort."; exit 1 }
+
+# remembered for `install.bat -Reuse` / update.bat
+New-Item -ItemType Directory -Force -Path $DesignerHome | Out-Null
+$last = [ordered]@{ hosts = @($pickedHosts); modules = @($pickedModules); sources = @($pickedSources); studioMode = $StudioMode; studioPath = $StudioPath; repo = $Root; date = (Get-Date -Format s) }
+[System.IO.File]::WriteAllText($LastInstall, ($last | ConvertTo-Json -Depth 4), (New-Object System.Text.UTF8Encoding $false))
 
 $mod = @{}; foreach ($k in $moduleCatalog.Keys) { $mod[$k] = $pickedModules -contains $k }
 $src = @{}; foreach ($k in $sourceCatalog.Keys) { $src[$k] = $pickedSources -contains $k }

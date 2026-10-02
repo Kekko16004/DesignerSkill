@@ -5,8 +5,9 @@ Global anti-slop UI skill for **websites**, **phone apps** and **game UI** (incl
 ## Install
 
 ```
-designer\install.bat          interactive: hosts, external dependencies, sites
-designer\install.bat -All     everything, no questions
+install.bat          interactive: hosts, external dependencies, sites   (root shortcut to designer\install.bat)
+install.bat -All     everything, no questions
+update.bat           update everything from GitHub (skill + Variant Studio + transitions.dev), reinstall with the last choices
 ```
 
 Details: [designer/INSTALL.md](designer/INSTALL.md). Node.js ≥ 18 for scripts and Variant Studio.
@@ -27,7 +28,7 @@ Details: [designer/INSTALL.md](designer/INSTALL.md). Node.js ≥ 18 for scripts 
 
 ## External dependencies
 
-Not copied into the skill; referenced in [dependencies.json](dependencies.json), installed from GitHub only if you say yes, updated with `designer\update.bat`.
+Not copied into the skill; referenced in [dependencies.json](dependencies.json), installed from GitHub only if you say yes, updated with `update.bat`.
 
 | Component | Repo | How |
 |---|---|---|
@@ -51,6 +52,7 @@ designer/scripts/lint-slop.mjs
 designer/scripts/translate.mjs    html | react | rn | uitk | tokens
 designer/evals/                   test prompts to check the skill after changes
 designer/install.bat, update.bat
+install.bat, update.bat           root shortcuts
 variant-studio/                   git submodule
 dependencies.json
 ```

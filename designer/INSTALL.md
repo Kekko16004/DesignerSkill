@@ -4,10 +4,10 @@ Without any API key the skill works (Playwright + WebSearch + Variant Studio). K
 
 ## 1. Installer
 
-Double-click `designer\install.bat`, or from a terminal:
+Double-click `install.bat` in the repo root (shortcut to `designer\install.bat`), or from a terminal:
 
 ```
-designer\install.bat
+install.bat
 ```
 
 It asks three things (Enter = recommended `*`, or `all` / `none` / numbers like `1 3 4`):
@@ -28,7 +28,10 @@ install.bat -Quiet
 install.bat -Hosts kilo,claude -SkipModules mcp21st -SkipSources aceternity,artStation
 install.bat -StudioMode copy
 install.bat -StudioPath D:\variant-studio
+install.bat -Reuse                         repeat the last install's choices, no questions
 ```
+
+Your choices are saved in `~\.designer\install.json` (used by `update.bat`).
 
 Then **restart** the selected clients. Node.js ≥ 18 is required by the scripts and Variant Studio.
 
@@ -60,16 +63,17 @@ Proxy search order: env `VARIANT_STUDIO_HOME` → `variantStudio.path` → `..\v
 node designer\scripts\studio.mjs where
 ```
 
-## 4. Updating external components
+## 4. Updating (one click)
 
-```
-designer\update.bat                      Variant Studio + transitions.dev
-designer\update.bat -Only variant-studio
-```
+Double-click `update.bat` in the repo root (shortcut to `designer\update.bat`). It updates everything from GitHub:
 
-Variant Studio: `git submodule update --remote` (or `git pull` on a standalone folder); linked installs are current immediately, copied ones are refreshed. To pin the new version in this repo: `git add variant-studio && git commit`.
+1. `git pull` of this repo (the designer skill) + its Variant Studio submodule
+2. Variant Studio to the latest upstream commit (`git submodule update --remote`)
+3. reinstall with the choices of the last install (`install.bat -Reuse`), no questions; this also refreshes transitions.dev and the commands
 
-The skill itself: `git pull` this repo, then run `install.bat` again.
+Options: `-NoSelf` (skip the repo pull), `-NoInstall` (skip the reinstall), `-StudioPath D:\vs`. If `git pull` fails because of local changes it warns and continues with the local version.
+
+Variant Studio ends up ahead of the commit pinned in this repo; to pin it: `git add variant-studio && git commit`.
 
 ## 5. API key (only if you selected the 21st MCP)
 
