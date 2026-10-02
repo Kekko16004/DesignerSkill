@@ -1,1 +1,1 @@
-Vedi [real-world-design/INSTALL.md](real-world-design/INSTALL.md).
+See [designer/INSTALL.md](designer/INSTALL.md).

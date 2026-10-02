@@ -1,0 +1,40 @@
+{
+  "$comment": "External components used by designer. They are NOT copied into the skill: install.bat asks whether to install each one (from GitHub), update.bat updates them.",
+  "dependencies": [
+    {
+      "id": "variant-studio",
+      "module": "variantStudio",
+      "name": "Variant Studio",
+      "kind": "skill",
+      "repo": "https://github.com/Fonlogen/variant-studio",
+      "submodule": "variant-studio",
+      "install": "linked or copied into every selected host's skills folder",
+      "used_for": "Live variant gallery (step 6)",
+      "recommended": true
+    },
+    {
+      "id": "transitions-dev",
+      "module": "transitionsDev",
+      "name": "transitions.dev",
+      "kind": "skill",
+      "repo": "https://github.com/Jakubantalik/transitions.dev",
+      "install": "npx --yes skills add Jakubantalik/transitions.dev -g -y",
+      "used_for": "Motion recipes (references/motion.md)",
+      "recommended": true
+    },
+    {
+      "id": "21st-mcp",
+      "module": "mcp21st",
+      "name": "21st.dev MCP",
+      "kind": "mcp",
+      "url": "https://21st.dev/api/mcp",
+      "env": "API_KEY_21ST",
+      "used_for": "Component and logo catalog (references/catalogs.md)",
+      "recommended": true
+    }
+  ],
+  "references_only": [
+    { "name": "thinking-orbs", "repo": "https://github.com/Jakubantalik/thinking-orbs", "install": "npm i thinking-orbs (in the target project, only when needed)" },
+    { "name": "Agentation", "repo": "https://github.com/benjitaylor/agentation", "install": "npm i agentation -D (in the target project, optional)" }
+  ]
+}

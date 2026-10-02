@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "hosts": ["claude", "kilo", "codex", "antigravity"],
+  "modules": {
+    "variantStudio": true,
+    "designCommand": true,
+    "mcp21st": true,
+    "transitionsDev": true
+  },
+  "sources": {
+    "gameUiDatabase": true,
+    "interfaceInGame": true,
+    "beautifulUi": true,
+    "twentyFirst": true,
+    "aceternity": false,
+    "componentGallery": true,
+    "gameIcons": true,
+    "artStation": false,
+    "appStore": true
+  },
+  "companion": {
+    "enabled": true,
+    "maxVariants": 8,
+    "askBeforeOpen": false
+  },
+  "variantStudio": {
+    "path": null,
+    "repo": "https://github.com/Fonlogen/variant-studio"
+  },
+  "styles": {
+    "home": null
+  }
+}

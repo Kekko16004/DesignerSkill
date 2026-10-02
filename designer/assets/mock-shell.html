@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>UI mock</title>
+  <link rel="stylesheet" href="./token-template.css" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .scene {
+      min-height: 100dvh;
+      padding: var(--safe-top) 16px var(--safe-bottom);
+      background:
+        radial-gradient(1200px 600px at 50% 0%, var(--paper-2), var(--paper));
+    }
+    .panel {
+      border: 2px solid var(--border-outer);
+      box-shadow: var(--shadow-inset), var(--shadow-drop);
+      background: var(--paper-2);
+      position: relative;
+    }
+    .panel::after {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset: 1px;
+      border: 1px solid var(--border-inner);
+    }
+    .display { font-family: var(--font-body); }
+    button, [role="button"] { min-height: var(--hit); min-width: var(--hit); }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="panel" style="max-width: 920px; margin: 24px auto; padding: 20px;">
+      <h1 class="display">Replace this shell</h1>
+      <p>Lock tokens first. Reverse-engineer a real reference. Then build.</p>
+    </div>
+  </div>
+</body>
+</html>
