@@ -1,9 +1,11 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/brand/lockup-dark.png">
-    <img src="assets/brand/lockup-light.png" alt="designer — anti-slop UI skill" width="360">
+    <img src="assets/brand/lockup-light.png" alt="DesignerSkill — anti-slop UI skill" width="360">
   </picture>
 </p>
+
+<h1 align="center">DesignerSkill</h1>
 
 <p align="center">
   <b>An agent skill that designs UI from real references, not from defaults.</b><br>
