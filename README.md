@@ -16,7 +16,7 @@
   <img alt="Agent Skill" src="https://img.shields.io/badge/agent%20skill-designer-0b0b0b?style=flat-square">
   <img alt="Claude Code · Kilo · Codex · Antigravity" src="https://img.shields.io/badge/agents-Claude%20Code%20·%20Kilo%20·%20Codex%20·%20Antigravity-0b0b0b?style=flat-square">
   <img alt="Node 18+" src="https://img.shields.io/badge/node-%E2%89%A518-0b0b0b?style=flat-square">
-  <img alt="Windows" src="https://img.shields.io/badge/installer-Windows-0b0b0b?style=flat-square">
+  <img alt="Windows · macOS · Linux" src="https://img.shields.io/badge/installer-Windows%20·%20macOS%20·%20Linux-0b0b0b?style=flat-square">
   <img alt="Zero dependencies" src="https://img.shields.io/badge/scripts-zero%20deps-ff6a1a?style=flat-square">
 </p>
 
@@ -33,6 +33,32 @@
 
 AI-generated UI tends to converge on the same thing: Inter, `rounded-xl`, an indigo gradient, a hero with three cards. **designer** is a skill for coding agents that refuses that default. It makes the agent reverse-engineer real products first, lock a token set before writing markup, show you 3–8 genuinely different directions in a live gallery, and only then build — with an automated anti-slop gate, visual QA, a written design spec and a translation step to the stack you actually ship.
 
+## Quick start
+
+Requirements: [Node.js 18+](https://nodejs.org) and git. Works on **Windows**, **macOS** and Linux.
+
+**macOS / Linux** (Terminal):
+
+```bash
+git clone --recurse-submodules https://github.com/Kekko16004/DesignerSkill.git
+cd DesignerSkill
+./install.sh
+```
+
+No Node yet on macOS? `brew install node` (or the installer from nodejs.org). You can also double-click `install.command` in Finder.
+
+**Windows** (PowerShell 5.1+):
+
+```bat
+git clone --recurse-submodules https://github.com/Kekko16004/DesignerSkill.git
+cd DesignerSkill
+install.bat
+```
+
+The installer asks where to install (Claude Code, Kilo Code, Codex, Antigravity, Cursor, OpenCode, Copilot, Windsurf), which external components to fetch from GitHub, and which reference sites the agent may open. Restart your agent afterwards.
+
+Keep everything current with one click: `./update.sh` (or `update.command`) on macOS / Linux, `update.bat` on Windows. It pulls this repo, updates Variant Studio and transitions.dev, and reinstalls with your previous choices. Full details: [designer/INSTALL.md](designer/INSTALL.md).
+
 ## Features
 
 | | |
@@ -46,26 +72,6 @@ AI-generated UI tends to converge on the same thing: Inter, `rounded-xl`, an ind
 | **DESIGN.md** | Every run leaves a written spec another agent can rebuild from. |
 | **Translate** | Approved preview → plain HTML, React, React Native, Unity UI Toolkit (UXML/USS), and tokens for Tailwind, Flutter, SwiftUI. |
 | **Game-aware** | HUD, inventory, shop, menus; FiveM/RedM NUI rules only when you ask for them. |
-
-## Quick start
-
-Requirements: Windows (PowerShell 5.1+), [Node.js 18+](https://nodejs.org), git.
-
-```bat
-git clone --recurse-submodules https://github.com/Kekko16004/DesignerSkill.git
-cd DesignerSkill
-install.bat
-```
-
-The installer asks where to install (Claude Code, Kilo Code, Codex, Antigravity, Cursor, OpenCode, Copilot, Windsurf), which external components to fetch from GitHub, and which reference sites the agent may open. Restart your agent afterwards.
-
-Keep everything current with one click:
-
-```bat
-update.bat
-```
-
-It pulls this repo, updates Variant Studio and transitions.dev, and reinstalls with your previous choices. Full details: [designer/INSTALL.md](designer/INSTALL.md).
 
 ## Usage
 
@@ -174,10 +180,12 @@ designer/                 the skill
   command/                /designer, /createstyle
   scripts/                studio proxy, styles, extract-style, lint-slop, translate
   evals/                  test prompts to re-run after changing the skill
-  install.ps1 · update.ps1
+  install.ps1 · update.ps1   Windows installer / updater
+  install.sh · update.sh     macOS / Linux installer / updater
 variant-studio/           git submodule (Fonlogen/variant-studio)
 assets/brand/             logo: SVG sources, PNG exports, brand spec
-install.bat · update.bat  one-click shortcuts
+install.bat · update.bat  one-click shortcuts (Windows)
+install.sh · update.sh    shortcuts (macOS / Linux); install.command · update.command for Finder
 dependencies.json         external components
 ```
 

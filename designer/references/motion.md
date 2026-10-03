@@ -1,6 +1,6 @@
 # Motion
 
-Companion: the `transitions-dev` skill (external dependency, installed by `install.bat`). Adapt it to the tokens; do not copy SaaS easing onto diegetic popups.
+Companion: the `transitions-dev` skill (external dependency, installed by `install.bat` / `install.sh`). Adapt it to the tokens; do not copy SaaS easing onto diegetic popups.
 
 ## Budget per mode
 

@@ -2,7 +2,7 @@
 
 Live gallery **after** mode, brief, reverse engineering, token lock and the anti-slop gate. Replaces Visual Companion.
 
-Variant Studio **does not live in this skill**. It is the standalone skill [`variant-studio`](https://github.com/Fonlogen/variant-studio), updated on its own (`update.bat`). This skill only ships the proxy `scripts/studio.mjs`, which finds it and forwards every command.
+Variant Studio **does not live in this skill**. It is the standalone skill [`variant-studio`](https://github.com/Fonlogen/variant-studio), updated on its own (`update.bat` / `update.sh`). This skill only ships the proxy `scripts/studio.mjs`, which finds it and forwards every command.
 
 Below, `STUDIO` = `node "<SKILL>/scripts/studio.mjs"` (the proxy). Always pass `--project "<PROJECT>"`: everything lives in `<project>/.variant-studio/`.
 
@@ -16,7 +16,7 @@ node "<SKILL>/scripts/studio.mjs" where
 
 Prints `{ path, script, skill, version, source }`. Then **read `skill` (variant-studio's `SKILL.md`)**: it is the source of truth for commands, flags, the `round.json` schema, the decision format and gallery shortcuts. Its `references/` (manifest, platforms, frameworks) are in `path/references/`. If a rule below contradicts that file on **how the studio works**, that file wins. The **design** rules below always win.
 
-Exit 3 / `variant-studio-not-found` → tell the user in one line to install it (`install.bat`, Variant Studio dependency) and continue without the studio: mock + Playwright. Never invent a URL.
+Exit 3 / `variant-studio-not-found` → tell the user in one line to install it (`install.bat` on Windows, `./install.sh` on macOS / Linux, Variant Studio dependency) and continue without the studio: mock + Playwright. Never invent a URL.
 
 Proxy search order: env `VARIANT_STUDIO_HOME` → `config.json` `variantStudio.path` → `<skill>/../variant-studio` → global skills (`~/.claude/skills`, `~/.agents/skills`, `~/.kilo/skills`, …) → project skills under the cwd.
 

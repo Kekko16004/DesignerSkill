@@ -68,8 +68,9 @@ const args = process.argv.slice(2);
 if (!found.script) {
   console.error(JSON.stringify({
     error: 'variant-studio-not-found',
-    hint: 'Install Variant Studio as a standalone skill (designer/install.bat, Variant Studio dependency) ' +
-      'or: irm https://raw.githubusercontent.com/Fonlogen/variant-studio/main/install.ps1 | iex ' +
+    hint: 'Install Variant Studio as a standalone skill (designer/install.bat or designer/install.sh, Variant Studio dependency) ' +
+      'or: irm https://raw.githubusercontent.com/Fonlogen/variant-studio/main/install.ps1 | iex (Windows) ' +
+      '/ curl -fsSL https://raw.githubusercontent.com/Fonlogen/variant-studio/main/install.sh | bash (macOS/Linux) ' +
       '- or set VARIANT_STUDIO_HOME / config.json variantStudio.path. ' +
       'Meanwhile continue without the studio (mock + Playwright).',
     tried: found.tried,

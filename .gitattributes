@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# shell scripts must keep LF (macOS / Linux), batch files CRLF (Windows)
+*.sh      text eol=lf
+*.command text eol=lf
+*.mjs     text eol=lf
+*.bat     text eol=crlf
