@@ -1,0 +1,75 @@
+{
+  "$comment": "Manifest of the skillkit installer (installer/install.mjs). Skills are installed once in ~/.agents/skills, hosts that do not read that folder get a link, external dependencies come from their GitHub repos at the latest commit.",
+  "id": "designer",
+  "name": "designer",
+  "version": "3.0.0",
+  "repo": "https://github.com/Kekko16004/DesignerSkill.git",
+  "brand": {
+    "mark": "[■]",
+    "accent": "#ff6a1a",
+    "tagline": { "it": "UI anti-slop · Variant Studio · token · QA", "en": "anti-slop UI · Variant Studio · tokens · QA" }
+  },
+  "hooks": "installer/hooks.mjs",
+  "requires": [
+    { "id": "node", "label": "Node.js", "min": "18", "required": true,
+      "install": { "win": "winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements", "mac": "brew install node", "linux": "sudo apt install -y nodejs npm" } },
+    { "id": "git", "label": "git", "required": false, "offer": true,
+      "why": { "it": "aggiornamenti delle dipendenze (senza: zip da GitHub)", "en": "dependency updates (without: GitHub zip)" },
+      "install": { "win": "winget install --id Git.Git -e --accept-source-agreements --accept-package-agreements", "mac": "xcode-select --install", "linux": "sudo apt install -y git" } }
+  ],
+  "skills": [
+    {
+      "name": "designer",
+      "path": "designer",
+      "legacy": ["real-world-design"],
+      "exclude": ["install.bat", "install.ps1", "install.sh", "install-mcp.ps1", "install-mcp.mjs", "update.bat", "update.ps1", "update.sh", "INSTALL.md", "config.json", "styles", "evals"],
+      "keep": ["config.json", "styles"]
+    }
+  ],
+  "commands": [
+    { "name": "createstyle", "file": "designer/command/createstyle.md" },
+    { "name": "designer", "file": "designer/command/designer.md", "onlyHosts": ["gemini"] }
+  ],
+  "retiredCommands": ["design"],
+  "commandMarker": "designer|real-world-design",
+  "components": [
+    {
+      "id": "variantStudio",
+      "kind": "repo",
+      "repo": "https://github.com/Fonlogen/variant-studio.git",
+      "skills": ".",
+      "exclude": ["install.cmd", "install.ps1", "install.sh"],
+      "label": { "it": "Variant Studio", "en": "Variant Studio" },
+      "hint": { "it": "gallery varianti live, sempre all'ultima versione (Fonlogen/variant-studio)", "en": "live variant gallery, always the latest (Fonlogen/variant-studio)" },
+      "recommended": true
+    },
+    {
+      "id": "transitionsDev",
+      "kind": "repo",
+      "repo": "https://github.com/Jakubantalik/transitions.dev.git",
+      "skills": "*",
+      "label": { "it": "transitions.dev", "en": "transitions.dev" },
+      "hint": { "it": "ricette motion (Jakubantalik/transitions.dev)", "en": "motion recipes (Jakubantalik/transitions.dev)" },
+      "recommended": true
+    },
+    {
+      "id": "playwrightMcp",
+      "kind": "mcp",
+      "needs": ["cmd:npx"],
+      "label": { "it": "Playwright MCP", "en": "Playwright MCP" },
+      "hint": { "it": "QA visivo e reverse engineering (@playwright/mcp@latest)", "en": "visual QA and reverse engineering (@playwright/mcp@latest)" },
+      "mcp": { "name": "playwright", "command": "npx", "args": ["-y", "@playwright/mcp@latest"], "adopt": "@playwright/mcp" },
+      "recommended": true
+    },
+    {
+      "id": "mcp21st",
+      "kind": "mcp",
+      "env": "API_KEY_21ST",
+      "envHelp": { "it": "Chiave 21st: https://21st.dev/settings/api-keys → setx API_KEY_21ST \"la_tua_chiave\" (mai in chat o nel repo)", "en": "21st key: https://21st.dev/settings/api-keys → setx API_KEY_21ST \"your_key\" (never in chat or the repo)" },
+      "label": { "it": "21st.dev MCP", "en": "21st.dev MCP" },
+      "hint": { "it": "catalogo componenti e loghi", "en": "component and logo catalog" },
+      "mcp": { "name": "21st", "url": "https://21st.dev/api/mcp", "headers": { "x-api-key": "${env:API_KEY_21ST}" } },
+      "recommended": true
+    }
+  ]
+}

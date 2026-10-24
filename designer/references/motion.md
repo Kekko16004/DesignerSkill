@@ -12,6 +12,19 @@ Companion: the `transitions-dev` skill (external dependency, installed by `insta
 
 `prefers-reduced-motion: reduce` = no loops, no parallax, opacity only.
 
+## Web rules (product-app, marketing; not game)
+
+From Hallmark and Vercel (H10a, H15, H17, H18, H27; [web-gates.md](web-gates.md)).
+
+- Never `transition: all`: list the properties. Animate `transform` and `opacity` only (blur/clip-path only if smooth on the element alone). Never width/height/top/left, never margin/padding.
+- Duration tokens: `--dur-micro` 120ms (press, tick, colour) · `--dur-short` 220ms (hover, tooltip, menu) · `--dur-long` 420ms (modal, drawer, accordion, reveal). **Exits at 60–75% of the enter.** The table above bounds ordinary in/out/hover; `--dur-long` is only for large surfaces (modal, drawer, reveal).
+- Easing: ease-out for arrivals, ease-in for exits, ease-in-out for toggles; never the browser's bare `ease`; `linear` only for progress; no overshoot on UI state.
+- Tooltips: 800–1000ms delay on hover, **0 on focus**; peers in a group open instantly once one is open.
+- Focus rings never animate. Hover is one signal per element, on the container, only inside `@media (hover: hover)`.
+- Anything looping or auto-rotating past 5 s pauses on hover and focus and has a visible pause control; every loop stops off-screen and under reduced motion.
+- Animations are interruptible; set the right `transform-origin`; SVG transforms on a `<g>` with `transform-box: fill-box`.
+- Reveals: one per page, content visible with scripting off.
+
 ## Game
 
 - Popup: scale 0.96→1 + fade, **no** elastic

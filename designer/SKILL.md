@@ -29,10 +29,16 @@ You are the lead UI/UX designer. Do not invent layouts. Do not use SaaS kits as 
 | [references/playwright-qa.md](references/playwright-qa.md) | Before the screenshot loop |
 | [references/design-doc.md](references/design-doc.md) | Step 9 (DESIGN.md) and the reference library |
 | [references/translate.md](references/translate.md) | Step 10, whenever the target is not the HTML mock itself |
+| [references/web-gates.md](references/web-gates.md) + [references/craft-web.md](references/craft-web.md) | `product-app` / `marketing`: before tokens and at QA |
+| [references/fonts.md](references/fonts.md) | Step 4 with no saved style |
+| [references/web-guidelines.md](references/web-guidelines.md) | Step 8, and when patching existing web code |
+| [references/copy.md](references/copy.md) | Whenever you write or review UI/landing copy |
+| [references/react-perf.md](references/react-perf.md) / [references/react-native.md](references/react-native.md) | Step 10 to React/Next / React Native |
+| [references/knowledge.md](references/knowledge.md) | Before `search.mjs` / `themes.mjs` |
 
 Assets: [mock-shell.html](assets/mock-shell.html), [token-template.css](assets/token-template.css), [design-template.md](assets/design-template.md), [style-template.md](assets/style-template.md).
 
-Scripts (Node ≥ 18, zero dependencies): `scripts/studio.mjs` (Variant Studio proxy), `scripts/styles.mjs` (global styles + library), `scripts/extract-style.mjs`, `scripts/lint-slop.mjs`, `scripts/translate.mjs`.
+Scripts (Node ≥ 18, zero dependencies): `scripts/studio.mjs` (Variant Studio proxy), `scripts/styles.mjs` (global styles + library), `scripts/extract-style.mjs`, `scripts/lint-slop.mjs`, `scripts/translate.mjs`, `scripts/search.mjs` (aesthetics/UX/stack knowledge), `scripts/themes.mjs` (48 theme seeds).
 
 ## Pipeline (mandatory)
 
@@ -85,6 +91,8 @@ Do not invent the layout. First check the library: `styles.mjs lib path "<title>
 ### 4. Tokens before code
 
 Custom properties **before** HTML/JSX. Start from the saved style's `tokens.css` if step 0 found one, otherwise from [token-template.css](assets/token-template.css) filled with brief values, not the defaults. Never start from Inter + `rounded-xl` + indigo.
+
+No saved style (web modes) → optionally seed from `themes.mjs match` / `search.mjs brief`, then lock your own tokens.
 
 ### 5. Anti-slop gate
 

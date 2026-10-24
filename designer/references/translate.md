@@ -31,6 +31,12 @@ Studio fragments pick up `<round>/_shared.css` and `.variant-studio/global.css` 
 
 ## Per stack
 
+### Stack knowledge
+
+- `node "<SKILL>/scripts/search.mjs" "<component or issue>" --stack <target>` (react, nextjs, react-native, shadcn, flutter, swiftui, html-tailwind…) for stack-specific guidance; results are seeds, tokens stay locked ([knowledge.md](knowledge.md)).
+- React / Next.js: read [react-perf.md](react-perf.md). React Native / Expo: read [react-native.md](react-native.md).
+- Patching existing web code: [web-guidelines.md](web-guidelines.md).
+
 ### Plain HTML / website
 `translate.mjs html`, then move the `<style>` to the site's CSS file if it has one. Replace studio `/p/...` paths with real paths.
 
@@ -38,7 +44,7 @@ Studio fragments pick up `<round>/_shared.css` and `.variant-studio/global.css` 
 `translate.mjs react` for structure, `translate.mjs tokens` → merge `.tailwind.js` into `theme.extend`, keep the `:root` block in the global CSS. Convert repeated class rules to components, not to 40-utility strings. Never default shadcn colors.
 
 ### React Native / Expo (phone app)
-`translate.mjs rn` + `translate.mjs tokens` → replace literals with `.tokens.ts` constants. Load fonts (expo-font). Gradients → `expo-linear-gradient`. Shadows: iOS `shadow*` + Android `elevation`. Safe areas: `react-native-safe-area-context`.
+`translate.mjs rn` + `translate.mjs tokens` → replace literals with `.tokens.ts` constants. Load fonts (expo-font config plugin). `borderCurve: 'continuous'` with every `borderRadius`. Gradients and shadows: native `experimental_backgroundImage` / `boxShadow` only on RN ≥ 0.76 New Architecture (gradient support newer still), otherwise `expo-linear-gradient` and iOS `shadow*` + Android `elevation` ([react-native.md](react-native.md)). Safe areas: `react-native-safe-area-context`.
 
 ### Flutter / SwiftUI
 No automatic markup pass: `translate.mjs tokens` gives `ThemeData` colors (`.tokens.dart`) or a `Color` enum (`.tokens.swift`); rebuild the widget tree by hand following the mock.

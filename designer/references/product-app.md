@@ -18,6 +18,20 @@ Phone apps and product UI. Not HUDs.
 - Swipe-back / sheet detents if the brief is iOS-like
 - Status bar padding
 
+## App screens (dashboards, admin, settings, tools)
+
+A screen someone works in, not reads (Hallmark § App screens). Marketing rules step aside: no hero, fold, word budget, section rhythm or reveal on load ([web-gates.md](web-gates.md) lists the skipped gates). Everything else binds: tokens, contrast, focus, eight states, no eyebrow, no tracked-caps table heads, no invented figures.
+
+- **Type:** fixed scale at ratio 1.125–1.2, no fluid heads, no display face on labels, buttons or data. One family is often right; a familiar sans is allowed here.
+- **Colour:** restrained. Accent = primary action, current selection, state. A second neutral carries sidebars, toolbars, panels.
+- **Shell:** top bar by default. A sidebar only past ~7 destinations, collapsing to a menu under 60rem. Standard patterns (tabs, breadcrumbs, command palette) beat invented ones; a modal is the last answer after inline editing and disclosure.
+- **Density:** controls 32–40px with a 44px hit target (48 on coarse pointers); one container recipe; tables before cards.
+- **Four data states** for every region that loads data: loading (skeleton in the shape of what comes), empty (what belongs here + the one action that fills it), error (what broke + what to do), full. Drawing only "full" is a quarter of the screen.
+- **State in the URL:** filters, tabs, pagination. Destructive actions are undone (5–10 s Undo) or confirmed (type the name for irreversible ones).
+- **Motion is state:** 120 / 220ms only, nothing orchestrated.
+- **Figures** are the product's own, tabular numerals; no icon tile, no gradient, no unmeasured trend arrow.
+- **Signature:** the one object the tool is known by (the ledger, the queue, the timeline), not a greeting over four stat cards.
+
 ## Agent surfaces (Beautiful UI)
 
 Use these names, do not reinvent:

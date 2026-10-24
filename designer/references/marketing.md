@@ -22,6 +22,13 @@ Write 4 lines:
 
 A hero with real hierarchy (display type, one CTA). Then **one** proof band (feature, quote, or demo), not three cloned cards. Pricing only if asked.
 
+## Anatomy and shape
+
+- Name the visitor's **job** (subscribe, book, visit, attend, buy, try, sign up, hire, join, listen) and read its part of `<SKILL>/data/hallmark/anatomy.md`: where the action lives, the category's own sections (the menu, the lineup, the issues), how real sites end. Build from that, not from figures + steps + email band.
+- Then design the page and name its shape from the 21 page shapes in `<SKILL>/data/hallmark/macrostructures/` (read only the one you land on). Hero postures, compositions and section openings: [craft-web.md](craft-web.md).
+- **Never end on an email band** unless the job is subscribe (or join/attend/listen with a recurring list, or the user asked). End on the job's action: the booking, the buy box, the download, the next date and address, the latest issue (H85).
+- Copy: [copy.md](copy.md). Gates: [web-gates.md](web-gates.md).
+
 ## Banned
 
 Hero + 3 cards + indigo gradient + fake logos + MacBook mockup + "Unlock your potential".
