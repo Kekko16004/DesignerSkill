@@ -107,7 +107,7 @@ Skip if `companion.enabled` is `false`. Otherwise read [companion.md](references
 - `kind`: whole screen = `page` (`desktop` for PC/NUI/HUD, `mobile` for phone), hero/band = `section`, isolated piece = `component`.
 - After writing the variant files **block** on `studio.mjs wait --timeout 1800` (tool timeout **1800000** ms). Never ask for the pick in chat.
 - `choose` → implement. `revise` / `remix` / `regenerate` → new round `--parent`. Comments, annotations, `tokens`, `text_edits`, `audit` are constraints.
-- Mode `game` with an image-generation tool in the session: ask **once** — concept images first (then replicated in HTML), direct UI variants, or both ([game-ui.md](references/game-ui.md) §4). Concept images are shown as a Variant Studio round too. FiveM / NUI: never images, direct variants only.
+- Mode `game`: look for an image-generation tool first. Connector tools such as Canva `generate-image` are often **deferred**: search for them (ToolSearch `generate-image`) before deciding there is none. If one exists, ask **once**: concept images first (then replicated in HTML), direct UI variants, or both ([game-ui.md](references/game-ui.md) §4). Running as a worker for another skill: never ask, take `UI_ROUTE` from the brief. Concept images are shown as a Variant Studio round too. FiveM / NUI: never images, direct variants only.
 
 ### 7. Implement
 

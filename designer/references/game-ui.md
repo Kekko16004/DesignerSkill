@@ -70,18 +70,21 @@ Pass `--tokens` after the token lock, so colors and faces in the prompts are the
 
 ## 4. Route: concept images or direct UI (mode `game` only, ask once)
 
-When an image-generation tool is available in the session (for example Canva `generate-image`, or an Adobe Firefly / Express image tool), ask the user **once**, with the structured question tool if there is one:
+**Find the tool first.** Image generation usually comes from a claude.ai connector, with nothing to install: Canva `generate-image` (`mcp__claude_ai_Canva__generate-image`), or an Adobe Firefly / Express image tool. In Claude Code these tools are often **deferred**: their names appear in the deferred list but they are not loaded. Run ToolSearch (`select:mcp__claude_ai_Canva__generate-image,mcp__claude_ai_Canva__get-generate-image-job`, or the keyword `generate-image`) before deciding that no tool is available. A connector that failed to connect is not available.
+
+When a tool is available, ask the user **once**, with the structured question tool if there is one:
 
 > For the game screens: (a) concept images from prompts first, then replicated in HTML; (b) UI variants built directly from different prompts in Variant Studio (the usual way); (c) both. Image generation may use credits of that service.
 
 - **(a) Concept first.**
-  1. One image per direction, from the `image` prompts (same screen, different directions).
+  1. One image per direction, from the `image` prompts (same screen, different directions). Write the prompts with `game-prompt.mjs --target image --tokens <tokens.css>`, filled from the GDD/brief (§3). Canva: `generate-image` with `aspectRatio: LANDSCAPE_16_9` (PC/console; `PORTRAIT_9_16` for a phone game) and the prompt verbatim, then `get-generate-image-job` until `SUCCESS` (skip polling when a widget shows the image). Save each image to `<mock dir>/concepts/<screen>-<direction>.png` (download the returned image URL with `curl -L`); keep the "Open generated image" link in DESIGN.md.
   2. Wrap each image in a variant page: a full-bleed `<img>` and the direction name as a caption.
   3. Show them as a Variant Studio round (`--kind page --viewports desktop`) and wait for the pick.
   4. Then replicate the chosen image in HTML (§5) and show 2–3 replicas in a second round (`--parent`): faithful, tighter and bolder interpretations.
 - **(b) Direct.** The usual step 6: 3–8 HTML variants, one per direction, from the `build` briefs.
 - **(c) Both.** Images for the key screen (usually the main menu or the HUD), direct variants for the rest, in the same visual language.
 - **No tool available** → (b) without asking.
+- **Called as a worker by another skill** (game-developer, game-launch-strategist, any subagent): never ask. The parent asked the user at its lock and passes `UI_ROUTE=concept|direct|both` in the brief (or `ui_route` in `DECISIONI.md` / the GDD). With no route given, use (b). If the route is `concept` or `both` and no tool is reachable from the worker, build (b) and write `concept route skipped: no image tool in worker` in the gate file, so the parent can generate the images itself and send them back.
 - **FiveM** → always (b), and simple: a per-screen mix of game and web simplicity (HUD ~85/15 game, bank ~30/70 web), judged on what is asked. No genre art direction, no slots, no image generation ([fivem-nui.md](fivem-nui.md)).
 
 Variant Studio stays mandatory on every route. An image is a reference and a pick; it is never the deliverable.
