@@ -38,7 +38,7 @@ You are the lead UI/UX designer. Do not invent layouts. Do not use SaaS kits as 
 
 Assets: [mock-shell.html](assets/mock-shell.html), [token-template.css](assets/token-template.css), [design-template.md](assets/design-template.md), [style-template.md](assets/style-template.md).
 
-Scripts (Node ≥ 18, zero dependencies): `scripts/studio.mjs` (Variant Studio proxy), `scripts/styles.mjs` (global styles + library), `scripts/extract-style.mjs`, `scripts/lint-slop.mjs`, `scripts/translate.mjs`, `scripts/search.mjs` (aesthetics/UX/stack knowledge), `scripts/themes.mjs` (48 theme seeds).
+Scripts (Node ≥ 18, zero dependencies): `scripts/studio.mjs` (Variant Studio proxy), `scripts/styles.mjs` (global styles + library), `scripts/extract-style.mjs`, `scripts/lint-slop.mjs`, `scripts/translate.mjs`, `scripts/search.mjs` (aesthetics/UX/stack knowledge), `scripts/themes.mjs` (48 theme seeds), `scripts/game-refs.mjs` (genre profile + comparable games + Steam screenshots), `scripts/game-prompt.mjs` (per-screen game UI prompts: image + build), `scripts/game-slots.mjs` (game slots manifest).
 
 ## Pipeline (mandatory)
 
@@ -86,7 +86,7 @@ Do not invent the layout. First check the library: `styles.mjs lib path "<title>
 
 - `product-app` → 2–3 real comparable apps, then catalogs as parts.
 - `marketing` → one direction before any kit.
-- `game` → Game UI Database + Interface In Game if enabled. Aceternity is banned for layout.
+- `game` → `game-refs.mjs refs` first (genre profile, comparables from the brief, `launch/comps.csv` and GamesTracker, real Steam screenshots: look at every one), then Game UI Database + Interface In Game if enabled, then `game-prompt.mjs` for screen-specific prompts. Aceternity is banned for layout. See [game-ui.md](references/game-ui.md).
 
 ### 4. Tokens before code
 
@@ -107,6 +107,7 @@ Skip if `companion.enabled` is `false`. Otherwise read [companion.md](references
 - `kind`: whole screen = `page` (`desktop` for PC/NUI/HUD, `mobile` for phone), hero/band = `section`, isolated piece = `component`.
 - After writing the variant files **block** on `studio.mjs wait --timeout 1800` (tool timeout **1800000** ms). Never ask for the pick in chat.
 - `choose` → implement. `revise` / `remix` / `regenerate` → new round `--parent`. Comments, annotations, `tokens`, `text_edits`, `audit` are constraints.
+- Mode `game` with an image-generation tool in the session: ask **once** — concept images first (then replicated in HTML), direct UI variants, or both ([game-ui.md](references/game-ui.md) §4). Concept images are shown as a Variant Studio round too. FiveM / NUI: never images, direct variants only.
 
 ### 7. Implement
 
@@ -114,6 +115,7 @@ Skip if `companion.enabled` is `false`. Otherwise read [companion.md](references
 - `existing`: patch the product files. Keep data, SVG icons, copy, callbacks, states. Never reset to Lorem.
 - Icons: real SVG (21st `search_logo`, game-icons.net, Kenney, the project's icon set) if those sources are enabled. Never invent SVG paths or use emoji as icons.
 - Reuse the tokens. No new raw hex after the lock.
+- Mode `game`: what the game renders (the world behind the UI, character renders, item previews, minimap) is a **game slot** with a proper placeholder (`assets/game-slot.css`), never a painted image; then `game-slots.mjs scan <mock> --out design/ui-slots.json` ([game-ui.md](references/game-ui.md) §5–6).
 
 ### 8. QA
 
@@ -137,7 +139,7 @@ When QA passes: stop. No decorative sections, bento, testimonials, extra glow. O
 
 **marketing** — one direction, then at most one Aceternity component restyled on the tokens. Never hero + 3 cards + indigo gradient.
 
-**game** — reverse-engineer real titles. Double borders, radius 0 or chamfer, HUD corners, text scrims, no shadcn cards. SaaS catalogs = SVG only, never layout.
+**game** — genre profile + real comparables with screenshots, prompts per screen, layered panels (frame → inset → slot), a display face, anchored menus, visible focus, world ornament, game slots instead of painted scenes. Double borders, radius 0 or chamfer, HUD corners, text scrims, no shadcn cards. SaaS catalogs = SVG only, never layout.
 
 ## Catalogs (after tokens)
 

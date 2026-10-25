@@ -1,0 +1,127 @@
+/* Game slots: the parts of a game screen that the game renders, not the UI (references/game-ui.md, Game slots).
+   Copy next to the mock and link it after the tokens. Every slot is a real element, so it translates (translate.mjs)
+   and stays in the layout; the engine replaces the placeholder with a render texture, a camera, the minimap or the world.
+
+   <div class="game-slot" data-game-slot="player-1" data-slot-kind="render-texture" data-slot-framing="bust"
+        data-slot-subject="player 1, head and shoulders, 3/4 view, rim light" data-slot-size="256x256">
+     <span class="game-slot__tag">player-1 · render</span>
+   </div>
+
+   Kinds: world · render-texture · 3d-preview · minimap · live-camera · video · sprite
+   Framing (render-texture, 3d-preview): bust · full · item · vehicle · group
+   The world slot fills its container and stays transparent in the engine; in the mock it is a quiet graded field.
+   Preview the concept image behind it with <html class="preview-scene"> and style="--slot-preview: url(concept.png)". */
+
+.game-slot {
+  --_ink: var(--slot-ink, var(--ink-dim, #9d988c));
+  --_line: var(--slot-line, var(--rule, #4a4d55));
+  --_bg: var(--slot-bg, var(--inset, #0f1013));
+  position: relative;
+  display: grid;
+  place-items: end start;
+  min-width: 48px;
+  min-height: 48px;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--_ink);
+  background:
+    repeating-linear-gradient(135deg, transparent 0 9px, color-mix(in srgb, var(--_line) 22%, transparent) 9px 10px),
+    var(--_bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--_line) 70%, transparent);
+}
+/* registration corners: reads as "something goes here", never as a finished panel */
+.game-slot::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--_ink), var(--_ink)) top left / 10px 1px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) top left / 1px 10px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) top right / 10px 1px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) top right / 1px 10px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) bottom left / 10px 1px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) bottom left / 1px 10px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) bottom right / 10px 1px no-repeat,
+    linear-gradient(var(--_ink), var(--_ink)) bottom right / 1px 10px no-repeat;
+  opacity: 0.7;
+}
+.game-slot__tag {
+  position: relative;
+  z-index: 2;
+  margin: 8px;
+  padding: 2px 6px;
+  font: 500 10px/1.4 var(--font-mono, ui-monospace, monospace);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--_ink);
+  background: color-mix(in srgb, var(--_bg) 80%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--_line) 80%, transparent);
+}
+
+/* silhouettes drawn with gradients only (no invented paths): head + shoulders, full body, item, vehicle */
+.game-slot[data-slot-framing]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.game-slot[data-slot-framing="bust"]::after {
+  background:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--_ink) 45%, transparent) 0 17%, transparent 17.5%),
+    radial-gradient(ellipse 46% 34% at 50% 100%, color-mix(in srgb, var(--_ink) 35%, transparent) 0 99%, transparent 100%);
+}
+.game-slot[data-slot-framing="full"]::after {
+  background:
+    radial-gradient(circle at 50% 14%, color-mix(in srgb, var(--_ink) 45%, transparent) 0 6%, transparent 6.4%),
+    radial-gradient(ellipse 15% 26% at 50% 40%, color-mix(in srgb, var(--_ink) 35%, transparent) 0 99%, transparent 100%),
+    radial-gradient(ellipse 12% 30% at 50% 76%, color-mix(in srgb, var(--_ink) 28%, transparent) 0 99%, transparent 100%),
+    radial-gradient(ellipse 34% 4% at 50% 97%, color-mix(in srgb, var(--_ink) 25%, transparent) 0 99%, transparent 100%);
+}
+.game-slot[data-slot-framing="group"]::after {
+  background:
+    radial-gradient(circle at 30% 36%, color-mix(in srgb, var(--_ink) 38%, transparent) 0 8%, transparent 8.4%),
+    radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--_ink) 45%, transparent) 0 9%, transparent 9.4%),
+    radial-gradient(circle at 70% 36%, color-mix(in srgb, var(--_ink) 38%, transparent) 0 8%, transparent 8.4%),
+    radial-gradient(ellipse 18% 30% at 30% 78%, color-mix(in srgb, var(--_ink) 26%, transparent) 0 99%, transparent 100%),
+    radial-gradient(ellipse 20% 34% at 50% 74%, color-mix(in srgb, var(--_ink) 32%, transparent) 0 99%, transparent 100%),
+    radial-gradient(ellipse 18% 30% at 70% 78%, color-mix(in srgb, var(--_ink) 26%, transparent) 0 99%, transparent 100%);
+}
+.game-slot[data-slot-framing="item"]::after {
+  background:
+    radial-gradient(ellipse 30% 8% at 50% 80%, color-mix(in srgb, var(--_ink) 30%, transparent) 0 99%, transparent 100%),
+    linear-gradient(135deg, transparent 38%, color-mix(in srgb, var(--_ink) 30%, transparent) 38% 62%, transparent 62%) center 42% / 46% 46% no-repeat;
+}
+.game-slot[data-slot-framing="vehicle"]::after {
+  background:
+    radial-gradient(ellipse 40% 12% at 50% 62%, color-mix(in srgb, var(--_ink) 34%, transparent) 0 99%, transparent 100%),
+    radial-gradient(ellipse 24% 10% at 48% 50%, color-mix(in srgb, var(--_ink) 28%, transparent) 0 99%, transparent 100%),
+    radial-gradient(circle at 30% 70%, color-mix(in srgb, var(--_ink) 40%, transparent) 0 5%, transparent 5.4%),
+    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--_ink) 40%, transparent) 0 5%, transparent 5.4%);
+}
+
+/* minimap: grid + north tick; live camera: REC frame */
+.game-slot[data-slot-kind="minimap"] {
+  background:
+    linear-gradient(color-mix(in srgb, var(--_line) 40%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, color-mix(in srgb, var(--_line) 40%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--_bg);
+}
+.game-slot[data-slot-kind="live-camera"] .game-slot__tag::before { content: "● "; color: var(--danger, #c9453a); }
+
+/* the world: what the game draws behind the UI. Quiet in the mock, transparent in the engine */
+.game-slot[data-slot-kind="world"] {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  min-height: 0;
+  place-items: end end;
+  box-shadow: none;
+  background:
+    radial-gradient(120% 90% at 70% 40%, color-mix(in srgb, var(--_line) 26%, transparent), transparent 70%),
+    linear-gradient(180deg, color-mix(in srgb, var(--_bg) 70%, #000), var(--_bg));
+}
+.game-slot[data-slot-kind="world"]::before { inset: 24px; opacity: 0.35; }
+.preview-scene .game-slot[data-slot-kind="world"] { background: var(--slot-preview, none) center / cover no-repeat, var(--_bg); }

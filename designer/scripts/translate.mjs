@@ -417,6 +417,17 @@ function uitkTarget() {
       return;
     }
     if (SKIP.has(n.tag) || n.tag === 'br') return;
+    // game slot (references/game-ui.md §6): an empty, named element the engine fills; the HTML placeholder is not translated
+    if (n.attrs['data-game-slot'] !== undefined) {
+      const id = n.attrs['data-game-slot'] || 'slot', kind = n.attrs['data-slot-kind'] || 'render-texture';
+      const cls = [...classes(n).filter((c) => !/^game-slot/.test(c)), 'game-slot', `game-slot--${kind}`].join(' ');
+      lines.push(`${ind(d)}<!-- game slot ${id}: ${kind}${n.attrs['data-slot-size'] ? ' ' + n.attrs['data-slot-size'] : ''}${n.attrs['data-slot-subject'] ? ' · ' + xmlEsc(n.attrs['data-slot-subject']).replace(/--/g, '-') : ''} -->`);
+      lines.push(`${ind(d)}<ui:VisualElement${attrs(n, { name: `slot-${id}`, class: cls, 'picking-mode': kind === 'world' ? 'Ignore' : undefined })} />`);
+      warn(kind === 'world'
+        ? `game slot "${id}" (world): keep the root and this element transparent, the game camera renders behind the UI Document`
+        : `game slot "${id}" (${kind}): Camera on its own layer → RenderTexture${n.attrs['data-slot-size'] ? ' ' + n.attrs['data-slot-size'] : ''} → style.backgroundImage of "slot-${id}" (see design/ui-slots.json)`);
+      return;
+    }
     const kids = n.children || [];
     const next = [...chain, n];
     const open = (type, extra) => lines.push(`${ind(d)}<${type}${attrs(n, extra)}>`);

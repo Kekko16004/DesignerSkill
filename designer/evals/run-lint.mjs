@@ -9,10 +9,20 @@ const lint = path.join(root, 'scripts', 'lint-slop.mjs');
 const fx = p => path.join(root, 'evals', 'fixtures', p);
 const WEB_IDS = ['generic-display-font', 'purple-gradient', 'gradient-text', 'tailwind-stock', 'card-in-card', 'eyebrow', 'buzzword', 'placeholder-name', 'viewport-overflow', 'transition-all', 'focus-fade', 'layout-animation', 'no-reduced-motion', 'img-size'];
 
+const WEB_ONLY = ['card-in-card', 'eyebrow', 'focus-fade', 'no-reduced-motion', 'img-size', 'hero-vh', 'tracked-caps-label'];
+
 const CASES = [
   { path: 'slopped', verdict: 'REDO_TOKENS', has: WEB_IDS.concat('generic-font') },
-  { path: 'slopped', mode: 'game', verdict: 'REDO_TOKENS', has: ['generic-font', 'indigo-hex', 'emoji'], not: WEB_IDS },
-  { path: 'slopped', mode: 'fivem', has: ['generic-font'], not: WEB_IDS },
+  // game: only the GAME_MIX part of the web rules runs (web-only layout and a11y stay out), plus the G rules
+  { path: 'slopped', mode: 'game', verdict: 'REDO_TOKENS', has: ['generic-font', 'indigo-hex', 'emoji', 'purple-gradient', 'gradient-text', 'tailwind-stock', 'buzzword'], not: WEB_ONLY },
+  // fivem: a NUI is linted like a simple web page (every web rule) + the transparency checks
+  { path: 'slopped', mode: 'fivem', verdict: 'REDO_TOKENS', has: WEB_IDS },
+  { path: 'game-flat', mode: 'game', verdict: 'PATCH', has: ['flat-panels', 'centered-card-menu', 'no-selected-state', 'single-face', 'no-ornament'], cats: ['material', 'layout'] },
+  { path: 'game-baked', mode: 'game', verdict: 'PATCH', has: ['baked-scene'], cats: ['layout'] },
+  { path: 'game-baked', mode: 'fivem', has: ['baked-scene', 'nui-opaque-body'] },
+  { path: 'game-rich', mode: 'game', verdict: 'PASS', zero: true },
+  { path: 'game-rich', mode: 'fivem', has: ['nui-opaque-body'], not: ['flat-panels', 'no-ornament'] },
+  { path: 'game-flat', mode: 'fivem', not: ['flat-panels', 'centered-card-menu', 'no-selected-state', 'single-face', 'no-ornament'] },
   { path: 'clean', verdict: 'PASS', zero: true },
   { path: 'eyebrow-fail', has: ['eyebrow'], count: { eyebrow: 6 } },
   { path: 'eyebrow-pass', not: ['eyebrow'] },
@@ -46,7 +56,7 @@ for (const c of CASES) {
   if (c.zero && r.hits.length) errs.push(`expected 0 hits, got ${r.hits.length} (${[...new Set(ids)].join(',')})`);
   if (c.cats && [...r.ban_categories].sort().join() !== [...c.cats].sort().join()) errs.push(`categories ${r.ban_categories} != ${c.cats}`);
   for (const [id, n] of Object.entries(c.count || {})) { const k = ids.filter(x => x === id).length; if (k !== n) errs.push(`${id} x${k} != ${n}`); }
-  for (const h of r.hits) if (!/^\[(H\d+[a-z]*|V|NAS)\]/.test(h.msg) && !/\[(H\d+[a-z]*|V|NAS)\]$/.test(h.msg) && h.id !== 'raw-hex' && h.id !== 'body-100vh') { errs.push(`no gate cited: ${h.id}`); break; }
+  for (const h of r.hits) if (!/^\[(H\d+[a-z]*|V|NAS|G\d)\]/.test(h.msg) && !/\[(H\d+[a-z]*|V|NAS|G\d)\]$/.test(h.msg) && h.id !== 'raw-hex' && h.id !== 'body-100vh') { errs.push(`no gate cited: ${h.id}`); break; }
   const name = c.path + (c.mode ? ` --mode ${c.mode}` : '');
   if (errs.length) { fails++; console.log(`FAIL  ${name}: ${errs.join('; ')}`); }
   else console.log(`ok    ${name}  ${r.verdict}  ${r.hits.length} hits`);

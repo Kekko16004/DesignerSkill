@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ashfall menu</title>
+<link rel="stylesheet" href="../../../assets/game-slot.css">
+<style>
+  :root { --paper: #15171b; --ink: #e9e4d8; --ink-dim: #9d988c; --accent: #c8923a; --rule: #4a4d55; --inset: #0e0f12;
+          --font-display: "Oswald", "Barlow Condensed", sans-serif; --font-body: "Barlow", sans-serif; --font-mono: "JetBrains Mono", monospace; }
+  body { margin: 0; min-height: 100dvh; position: relative; color: var(--ink); font-family: var(--font-body); background: var(--paper); }
+  .scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgb(10 11 13 / 0.92) 0 34%, rgb(10 11 13 / 0) 62%); }
+  .rail, .ticker { z-index: 2; }
+  .squad { position: absolute; right: 96px; bottom: 120px; width: 420px; height: 520px; z-index: 2; }
+  .rail { position: absolute; left: 64px; top: 96px; width: 380px; padding: 28px 24px;
+          background: linear-gradient(180deg, rgb(28 30 35 / 0.86), rgb(18 19 23 / 0.86));
+          border: 1px solid var(--rule); outline: 1px solid rgb(233 228 216 / 0.08); outline-offset: 4px;
+          box-shadow: inset 0 0 0 1px var(--inset), inset 0 24px 48px rgb(0 0 0 / 0.35); }
+  .rail::before, .rail::after { content: ""; position: absolute; width: 14px; height: 14px; border: 2px solid var(--accent); }
+  .rail::before { top: -6px; left: -6px; border-right: 0; border-bottom: 0; }
+  .rail::after { bottom: -6px; right: -6px; border-left: 0; border-top: 0; }
+  .logo { font-family: var(--font-display); font-size: 56px; letter-spacing: 0.02em; margin: 0 0 4px; }
+  .serial { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); margin: 0 0 24px; }
+  .menu-item { display: flex; justify-content: space-between; padding: 12px 14px; color: var(--ink); background: none; border: 0; width: 100%;
+               border-left: 3px solid transparent; font: 600 18px var(--font-display); text-transform: uppercase; }
+  .menu-item:focus-visible, .menu-item.is-selected { background: linear-gradient(90deg, rgb(200 146 58 / 0.22), rgb(200 146 58 / 0)); border-left-color: var(--accent); outline: none; }
+  .menu-item kbd { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); }
+  .save { margin-top: 20px; padding: 12px; border: 1px solid var(--rule); background: var(--inset); box-shadow: inset 0 1px 0 rgb(233 228 216 / 0.06); }
+  .ticker { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 64px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim);
+            background: linear-gradient(0deg, rgb(10 11 13 / 0.9), rgb(10 11 13 / 0)); }
+</style>
+</head>
+<body>
+  <div class="game-slot" data-game-slot="world" data-slot-kind="world" data-slot-subject="foggy street of the Soviet town at dusk"><span class="game-slot__tag">world · rendered by the game</span></div>
+  <div class="scrim"></div>
+  <div class="game-slot squad" data-game-slot="squad" data-slot-kind="render-texture" data-slot-framing="group" data-slot-subject="the 3 survivors of the last save, full body, campfire light" data-slot-size="420x520"><span class="game-slot__tag">squad · render</span></div>
+  <nav class="rail" aria-label="Main menu">
+    <h1 class="logo">Ashfall</h1>
+    <p class="serial">BLD 0.4.1 · SEC-7 · 1987</p>
+    <button class="menu-item is-selected">Continue <kbd>A</kbd></button>
+    <button class="menu-item">New game</button>
+    <button class="menu-item">Options</button>
+    <button class="menu-item">Quit</button>
+    <div class="save"><strong>Day 12</strong> · Brick factory · 3 survivors</div>
+  </nav>
+  <div class="ticker">Radio 104.2 · storm front moving east</div>
+</body>
+</html>

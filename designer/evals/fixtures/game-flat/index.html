@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ashfall menu</title>
+<style>
+  :root { --paper: #1d1f24; --ink: #e9e4d8; --accent: #c8923a; --line: #3a3d44; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Barlow", sans-serif; }
+  .main-menu { max-width: 420px; margin: 120px auto; padding: 32px; background: #26282e; border-radius: 14px; }
+  .logo { font-size: 40px; margin: 0 0 24px; }
+  .menu-list { display: flex; flex-direction: column; gap: 8px; padding: 0; margin: 0; list-style: none; }
+  .menu-item { padding: 14px 18px; background: #2e3037; color: var(--ink); }
+  .save-card { margin-top: 24px; padding: 16px; background: #2e3037; color: var(--ink); }
+  .save-card p { margin: 4px 0 0; font-size: 14px; }
+  .version { margin-top: 16px; font-size: 12px; color: #8d8a83; }
+  .ticker { position: fixed; left: 0; right: 0; bottom: 0; padding: 8px 16px; color: #8d8a83; }
+</style>
+</head>
+<body>
+  <main class="main-menu">
+    <h1 class="logo">Ashfall</h1>
+    <ul class="menu-list">
+      <li class="menu-item">Continue</li>
+      <li class="menu-item">New game</li>
+      <li class="menu-item">Options</li>
+      <li class="menu-item">Quit</li>
+    </ul>
+    <div class="save-card"><strong>Day 12</strong><p>Brick factory, 3 survivors</p></div>
+    <p class="version">Build 0.4.1</p>
+  </main>
+  <div class="ticker">Radio: storm front moving east</div>
+</body>
+</html>

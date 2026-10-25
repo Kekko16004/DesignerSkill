@@ -56,3 +56,13 @@ Screenshot at 1920×1080 over a real gameplay frame (contrast check), then 2560�
 ## Variant Studio
 
 `--kind page --viewports desktop`. Put a gameplay screenshot behind variants via `_shared.css` (`body { background: url(...) }`) so contrast is judged honestly.
+
+## Prompts (keep it simple)
+
+FiveM UIs are simple and intuitive. No genre art direction, no diegetic layers, no game slots, **no image generation**: variants are built directly in HTML (Variant Studio step 6). Every screen is a **mix** of two kinds of simplicity, with the ratio judged on what is asked:
+
+- **Game side**: glanceable, anchored to an edge, icons and numbers over words, bars and slots, never over the crosshair. Leads on HUD (~85/15), radial/target, notifications, inventory (~65/35).
+- **Web side**: one panel with title, search or tabs, list, detail, an obvious primary action, confirm on money. Leads on bank (~30/70), MDT, admin (~20/80), settings; shops, garage and phone sit near 40–50.
+- The brief moves it: "immersivo / in-game" pushes toward game, "semplice / pulito / sito" toward web. Whatever the ratio: simple, intuitive, good-looking.
+
+`game-prompt.mjs "<brief>" --mode fivem` picks the screens named in the brief (inventario, banca, garage, mdt, radiale…) and writes a short build brief per screen in the right register, plus 2–4 simple layout directions. Use the server's real data (`config.lua`, shared items, jobs). Lint with `--mode fivem`: the web rules plus an opaque `html/body` or a painted scene [G6].

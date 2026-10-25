@@ -5,7 +5,8 @@
 //
 // Verdict: PASS (0 ban categories) | PATCH (1-2) | REDO_TOKENS (3+). Exit code 0 / 0 / 2.
 // Web rules cite their source: [H..] Hallmark gate (references/web-gates.md), [V] Vercel guidelines, [NAS] no-ai-slop.
-// They are skipped under --mode game and fivem. Categories a11y and finish, and WARN hits, never count toward the verdict.
+// Under --mode game and fivem only a chosen mix of them runs (GAME_MIX), plus the game rules [G1-G5] against flat, banal game UI.
+// Categories a11y and finish, and WARN hits, never count toward the verdict.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, extname, relative, resolve } from 'node:path';
 import { parseCss, rootVars, resolveVars } from './lib/css.mjs';
@@ -27,8 +28,18 @@ for (let i = 0; i < args.length; i++) {
   else paths.push(args[i]);
 }
 if (!paths.length) { console.error('usage: lint-slop.mjs <file|dir> [--mode game|fivem|product-app|marketing] [--tokens tokens.css] [--json]'); process.exit(1); }
-const ruleMode = opt.mode === 'fivem' ? 'game' : opt.mode; // FiveM NUI is a game UI for the game-only rules
-const WEB = !['game', 'fivem'].includes(opt.mode);
+const ruleMode = opt.mode; // legacy game-only rules: game mode; FiveM NUI is linted like a simple web page
+const WEB = opt.mode !== 'game'; // fivem runs the web rules too: NUI should be simple and intuitive, close to a good web UI
+// web rules that also make sense in a game UI: level for game mode (fivem runs every web rule)
+const GAME_MIX = {
+  'purple-gradient': 'count', 'gradient-text': 'count', 'tailwind-stock': 'count',
+  'glow-orb': 'warn', 'pure-black-white': 'warn', 'generic-display-font': 'count',
+  'viewport-overflow': 'warn', 'placeholder-image': 'count',
+  'buzzword': 'count', 'nas-phrase': 'count', 'stock-cta': 'count',
+  'placeholder-name': 'count', 'copy-tell': 'warn', 'nas-word': 'warn',
+  'transition-all': 'warn', 'layout-animation': 'warn', 'outline-none': 'warn',
+};
+let webPhase = false;
 
 const EXT = new Set(['.html', '.htm', '.css', '.scss', '.jsx', '.tsx', '.js', '.ts', '.vue', '.svelte', '.astro']);
 const MARKUP = new Set(['.html', '.htm', '.jsx', '.tsx', '.vue', '.svelte', '.astro']);
@@ -37,7 +48,7 @@ const files = [];
 function collect(p) {
   const st = statSync(p);
   if (st.isDirectory()) { for (const f of readdirSync(p)) if (!SKIP_DIR.has(f)) collect(join(p, f)); }
-  else if (EXT.has(extname(p).toLowerCase()) && !/\.min\./.test(p)) files.push(p);
+  else if (EXT.has(extname(p).toLowerCase()) && !/\.min\./.test(p) && !/(^|[\\/])game-slot\.css$/.test(p)) files.push(p); // the slot placeholders are a skill asset
 }
 for (const p of paths) { if (!existsSync(p)) { console.error(`not found: ${p}`); process.exit(1); } collect(resolve(p)); }
 
@@ -184,6 +195,7 @@ const dval = (decls, prop) => { const d = decls.filter((x) => x.prop === prop).p
 // ---------- reporting
 const perRule = new Map();
 function add(doc, pos, cat, id, gate, msg, match = '', level = 'fail') {
+  if (webPhase && !WEB) { const lv = GAME_MIX[id]; if (!lv) return; if (lv === 'warn') level = 'warn'; }
   const key = `${doc ? doc.f : '-'}|${id}`;
   const n = perRule.get(key) || 0;
   if (n >= 20) return;
@@ -248,8 +260,9 @@ const kids = (d, i) => { const c = closeIdx(d.tags, i); const out = []; if (c < 
   });
 }
 
-// ---------- web rules (product-app / marketing / no mode)
-if (WEB) {
+// ---------- web rules (product-app / marketing / no mode; game and fivem keep only GAME_MIX)
+webPhase = true;
+{
   const bare = docs.map((d) => d.src.replace(/\/\*[\s\S]*?\*\/|<!--[\s\S]*?-->/g, ''));
   const prmAnywhere = bare.some((s) => /prefers-reduced-motion|motion-reduce:|motion-safe:/.test(s));
   const focusVisibleAnywhere = bare.some((s) => /:focus-visible|focus-visible:/.test(s));
@@ -544,6 +557,57 @@ if (WEB) {
     if ((dark || bodyTag) && !bare.some((s) => /color-scheme/.test(s))) {
       const at = bodyTag || { d: docs.find((d) => d.rules.length) || docs[0], t: null };
       add(at.d, at.t ? at.t.pos : 0, 'a11y', 'color-scheme', 'V', 'Dark UI without color-scheme: dark (scrollbars, form controls stay light)', bg || '');
+    }
+  }
+}
+webPhase = false;
+
+// ---------- game rules (game / fivem): a flat SaaS panel set is the game-UI version of slop [G1-G5, references/game-ui.md]
+if (opt.mode === 'game' || opt.mode === 'fivem') {
+  // G1-G5 only for game; FiveM NUI stays simple like a web page and only gets the transparency checks [G6]
+  const gadd = (...a) => opt.mode === 'game' && add(...a);
+  const css = allRules.filter((r) => !r.keyframes && !isTokenRule(r));
+  const val = (r, p) => r.decls.filter((x) => x.prop === p).map((x) => rv(x.value)).join(' ');
+  const has = (re) => docs.some((d) => re.test(d.src.replace(/\/\*[\s\S]*?\*\//g, '')));
+  // panels: boxes with their own surface (background) and padding, not the page itself
+  const panels = css.filter((r) => /background/.test(r.decls.map((x) => x.prop).join(' ')) && r.decls.some((x) => /^padding/.test(x.prop)) && !/^\s*(html|body|:root)\s*$/.test(r.selector));
+  const doc0 = (panels[0] || css[0] || { doc: docs[0] }).doc;
+  const at0 = panels[0] ? panels[0].pos : 0;
+  if (panels.length >= 2) {
+    const layered = css.some((r) => /\binset\b/.test(val(r, 'box-shadow')) || /,/.test(val(r, 'box-shadow').replace(/\([^)]*\)/g, ''))
+      || /\bdouble\b/.test(val(r, 'border') + val(r, 'border-style')) || val(r, 'outline') && !/none|0/.test(val(r, 'outline')) && r.decls.some((x) => x.prop === 'outline-offset')
+      || /gradient\(|url\(/.test(val(r, 'background') + val(r, 'background-image')) || val(r, 'border-image') || val(r, 'border-image-source'));
+    if (!layered) gadd(doc0, at0, 'material', 'flat-panels', 'G1', `${panels.length} panels, none layered: no inset, double frame, gradient or texture (frame → inset → slot)`, panels[0].selector);
+  }
+  const fams = new Set();
+  for (const r of css) { const v = val(r, 'font-family'); if (v) fams.add(families(v)[0]?.toLowerCase()); }
+  for (const [k, v] of Object.entries(vars)) if (/^--font/.test(k)) fams.add(families(rv(v))[0]?.toLowerCase());
+  fams.delete(undefined);
+  const real = [...fams].filter((x) => !/^(sans-serif|serif|monospace|system-ui|inherit|ui-[\w-]+)$/.test(x));
+  if (css.length >= 8 && real.length <= 1) gadd(doc0, 0, 'type', 'single-face', 'G2', `One face for everything (${real[0] || 'system font'}): no display face for the title, menu and numbers`, real[0] || '', 'warn');
+  if (anyMarkup && css.length >= 8 && !has(/:hover|:focus|\.is-(selected|active|focused)|\.(selected|active|focused|current)\b|\[aria-(selected|current|pressed)|\[data-(selected|state|focused)/)) gadd(doc0, 0, 'layout', 'no-selected-state', 'G4', 'No selected / focused state: gamepad and keyboard players cannot see where they are', '');
+  if (css.length >= 8 && !has(/::?(before|after)\b|clip-path|<svg\b|border-image|mask(-image)?\s*:|\.svg\b|corner|chamfer|notch|bracket/i)) gadd(doc0, 0, 'material', 'no-ornament', 'G5', 'No ornament layer: corners, chamfers, frame lines, serials, dividers or icons', '', 'warn');
+  // a main menu that is one centered card with a radius
+  for (const r of css) {
+    if (!/menu|title|start|main/i.test(r.selector)) continue;
+    const centered = /\bauto\b/.test(val(r, 'margin')) || /center/.test(val(r, 'place-items') + val(r, 'place-self'));
+    const narrow = pxOf(val(r, 'max-width')) && pxOf(val(r, 'max-width')) <= 520;
+    const round = (pxOf(val(r, 'border-radius').split(/\s+/)[0]) || 0) >= 10;
+    if (centered && narrow && round) { gadd(r.doc, r.pos, 'layout', 'centered-card-menu', 'G3', `Menu as one centered rounded card (${trunc(r.selector, 30)}): anchor it to a side or corner over the scene`, r.selector); break; }
+  }
+  // the game scene painted into the UI: the world is a game slot, not a background image [G6]
+  for (const r of css) {
+    if (/game-slot|preview-scene/.test(r.selector)) continue;
+    const img = /url\(/.test(val(r, 'background') + val(r, 'background-image'));
+    const full = /^\s*(html|body|:root|main|#app|\.app|\.screen|\.bg|\.background|\.scene|\.stage)\b/i.test(r.selector) || (/fixed|absolute/.test(val(r, 'position')) && (/^0(px)?(\s+0(px)?)*$/.test(val(r, 'inset').trim()) || /^100(v?w|%)$/.test(val(r, 'width').trim())));
+    if (img && full) { add(r.doc, r.pos, 'layout', 'baked-scene', 'G6', `"${trunc(r.selector, 24)}" paints the game scene into the UI: make it a world slot (data-game-slot="world", assets/game-slot.css)`, r.selector); break; }
+  }
+  if (opt.mode === 'fivem') {
+    for (const r of css) {
+      if (!/^\s*(html|body)\s*(,\s*(html|body)\s*)?$/i.test(r.selector)) continue;
+      const vals = [val(r, 'background'), val(r, 'background-color')].map((v) => v.trim()).filter(Boolean);
+      const bg = vals.join(' ');
+      if (vals.some((v) => !/^(transparent|none|rgba?\([^)]*[,/]\s*0\s*\))$/i.test(v))) { add(r.doc, r.pos, 'layout', 'nui-opaque-body', 'G6', 'NUI html/body has a background: the game is behind the page, keep it transparent (panels only)', bg.trim()); break; }
     }
   }
 }
