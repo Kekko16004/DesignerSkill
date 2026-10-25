@@ -1,6 +1,6 @@
 # Design: skillkit installer (terminal UI)
 
-> Written by the designer skill. Updated 2026-10-25. Same file in GameDeveloperSkill and DesignerSkill.
+> Written by the designer skill. Updated 2026-10-25. Same file in GameDeveloperSkill, DesignerSkill and GameLaunchAnalyzer.
 
 ## Brief
 
@@ -24,7 +24,7 @@ There were three directions: A, square panels; B, a vertical rail; C, a two-pane
 | fg | `#e8e4da` | body text (warm paper, never pure white) |
 | dim | `#8a857a` | values, hints, help lines |
 | faint | `#55524a` | the rail, box borders, things that were not found |
-| accent | per product: designer `#ff6a1a`, game-developer `#3fc98a` | active prompt, cursor, selected boxes, spinner, the mark's center |
+| accent | per product: designer `#ff6a1a`, game-developer `#3fc98a`, game-launch-strategist `#8f7cf6` | active prompt, cursor, selected boxes, spinner, the mark's center |
 | ok / warn / err | `#7bc47f` / `#e0b04a` / `#e5604f` | state glyphs only, never whole lines |
 | info | `#79a7d8` | reserved |
 
@@ -61,7 +61,7 @@ Each color is converted once for the terminal: truecolor in Windows Terminal, VS
 - Rules:
   - No line is wider than the terminal. Redrawn lines are cut with `…` and keep their color, so the cursor-up count stays correct.
   - Hosts that were not found and skipped modules use the faint tone. Errors color only their glyph and note.
-  - The `[■]` mark is drawn as `[■]` / `[▲]`. It becomes `[■]` in cp437 and `[#]` in ASCII.
+  - The `[■]` mark is drawn as `[■]` / `[▲]` / `[▶]`. It becomes `[■]` in cp437 and `[#]` in ASCII.
   - All text is in Italian or English, picked by the system locale or `--lang`.
 
 ## Do / don't

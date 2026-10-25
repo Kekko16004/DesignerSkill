@@ -1,0 +1,7 @@
+/* designer lint fixture: color done right. MUST PASS with zero hits. */
+:root { --ink: #1c1917; --paper: #faf7f2; --paper-2: #f0e9dd; --accent: #a8431c; --shade: rgba(40, 28, 16, 0.18); }
+.banner { background: linear-gradient(180deg, var(--paper), var(--paper-2)); }
+.title { color: var(--accent); }
+.card { background: var(--paper-2); color: var(--ink); }
+.cta { box-shadow: 0 2px 6px var(--shade), 0 12px 24px -12px var(--shade); }
+.hero::before { content: ""; position: absolute; inset: 0; background: var(--paper-2); }

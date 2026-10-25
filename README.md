@@ -26,7 +26,7 @@
   <a href="#how-it-works">How it works</a> ·
   <a href="#saved-styles">Saved styles</a> ·
   <a href="#translate-to-your-stack">Translate</a> ·
-  <a href="designer/INSTALL.md">Install guide</a>
+  <a href="INSTALL.md">Install guide</a>
 </p>
 
 ---
@@ -35,29 +35,18 @@ AI-generated UI tends to converge on the same thing: Inter, `rounded-xl`, an ind
 
 ## Quick start
 
-Requirements: [Node.js 18+](https://nodejs.org) and git. Works on **Windows**, **macOS** and Linux.
-
-**macOS / Linux** (Terminal):
+Requirements: [Node.js 18+](https://nodejs.org) (`install.bat` offers to install it) and git (recommended). Works on **Windows**, **macOS** and Linux.
 
 ```bash
-git clone --recurse-submodules https://github.com/Kekko16004/DesignerSkill.git
+git clone https://github.com/Kekko16004/DesignerSkill.git
 cd DesignerSkill
-./install.sh
+install.bat        # Windows
+./install.sh       # macOS / Linux (or double-click install.command)
 ```
 
-No Node yet on macOS? `brew install node` (or the installer from nodejs.org). You can also double-click `install.command` in Finder.
+The installer is a small terminal app: it detects your agents (Claude Code, Codex, Gemini CLI, Antigravity, Cursor, OpenCode, Kilo Code, Windsurf, Copilot, Roo, Cline), lets you pick modules and reference sites, and installs the skill **once** in `~/.agents/skills/designer`. Only the hosts that do not read that folder get a link. Old copies that made the skill show up twice are moved to a backup. Restart your agent afterwards.
 
-**Windows** (PowerShell 5.1+):
-
-```bat
-git clone --recurse-submodules https://github.com/Kekko16004/DesignerSkill.git
-cd DesignerSkill
-install.bat
-```
-
-The installer asks where to install (Claude Code, Kilo Code, Codex, Antigravity, Cursor, OpenCode, Copilot, Windsurf), which external components to fetch from GitHub, and which reference sites the agent may open. Restart your agent afterwards.
-
-Keep everything current with one click: `./update.sh` (or `update.command`) on macOS / Linux, `update.bat` on Windows. It pulls this repo, updates Variant Studio and transitions.dev, and reinstalls with your previous choices. Full details: [designer/INSTALL.md](designer/INSTALL.md).
+Keep everything current with `update.bat` / `./update.sh`: it pulls this repo, takes Variant Studio and transitions.dev to their latest commit and reinstalls with your previous choices. `node installer/install.mjs doctor` checks the install. Full details: [INSTALL.md](INSTALL.md).
 
 ## Features
 
@@ -160,12 +149,13 @@ All scripts are plain Node (≥ 18) with zero dependencies.
 
 ## External components
 
-Referenced in [dependencies.json](dependencies.json), never copied into the skill. The installer asks before fetching each one.
+Declared in [skillkit.json](skillkit.json), fetched from their own repos at the latest commit, never copied into this repo. Each one is a module you can turn off.
 
 | Component | Source | Installed as |
 |---|---|---|
-| Variant Studio | [Fonlogen/variant-studio](https://github.com/Fonlogen/variant-studio) | git submodule, linked into every host |
-| transitions.dev | [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev) | skill via `npx skills add` |
+| Variant Studio | [Fonlogen/variant-studio](https://github.com/Fonlogen/variant-studio) | skill `variant-studio` next to `designer` |
+| transitions.dev | [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev) | its skills |
+| Playwright MCP | [@playwright/mcp](https://github.com/microsoft/playwright-mcp) | MCP server in every picked host |
 | 21st.dev MCP | [21st.dev](https://21st.dev) | MCP server, key in `API_KEY_21ST` (optional) |
 
 Without API keys the skill still works: Playwright + web search + Variant Studio.
@@ -180,13 +170,11 @@ designer/                 the skill
   command/                /designer, /createstyle
   scripts/                studio proxy, styles, extract-style, lint-slop, translate
   evals/                  test prompts to re-run after changing the skill
-  install.ps1 · update.ps1   Windows installer / updater
-  install.sh · update.sh     macOS / Linux installer / updater
-variant-studio/           git submodule (Fonlogen/variant-studio)
+installer/                skillkit installer: install.mjs + lib/ (Node, zero dependencies), hooks.mjs, DESIGN.md
 assets/brand/             logo: SVG sources, PNG exports, brand spec
 install.bat · update.bat  one-click shortcuts (Windows)
 install.sh · update.sh    shortcuts (macOS / Linux); install.command · update.command for Finder
-dependencies.json         external components
+skillkit.json             installer manifest: skills, commands, external components
 ```
 
 ## Contributing

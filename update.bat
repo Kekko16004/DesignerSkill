@@ -6,7 +6,7 @@ chcp 65001 >nul
 set "ROOT=%~dp0"
 where node >nul 2>&1
 if errorlevel 1 call :need_node || exit /b 1
-node "%ROOT%installer\install.mjs" install %*
+node "%ROOT%installer\install.mjs" update %*
 set "CODE=%ERRORLEVEL%"
 if not defined SKILLKIT_NO_PAUSE if "%~1"=="" pause
 exit /b %CODE%

@@ -33,7 +33,7 @@ Fallback: WebSearch `site:interfaceingame.com [game]`.
 
 - `twentyFirst` — https://21st.dev/ — MCP `https://21st.dev/api/mcp`
 - `aceternity` — https://ui.aceternity.com/ — marketing only, no MCP
-- transitions.dev — companion skill if `modules.transitionsDev` (external dependency, see `dependencies.json`)
+- transitions.dev — companion skill if `modules.transitionsDev` (external dependency, see `skillkit.json`)
 
 ## Icons / SVG
 

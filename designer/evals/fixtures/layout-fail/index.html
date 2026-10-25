@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- designer lint fixture: layout and chrome rules. Expected PATCH or worse (layout, chrome). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln, a pottery studio</title>
+<style>
+:root { --ink: #231d19; --paper: #f2ece4; --font-display: "Gloock", serif; --font-body: "Literata", serif; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); }
+.hero { min-height: 100vh; }
+.strip { width: 100vw; }
+.shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+</style>
+</head>
+<body>
+<section class="hero">
+  <h1>Wheel classes on Thursday evenings</h1>
+  <div class="browser-bar"><span></span><span></span><span></span></div>
+  <img src="https://placehold.co/600x400" alt="Studio" width="600" height="400">
+</section>
+<section class="shots">
+  <figure class="card"><div class="card"><p>Glazes</p></div></figure>
+  <figure>Kilns</figure>
+  <figure>Clay</figure>
+</section>
+<div class="strip"></div>
+</body>
+</html>

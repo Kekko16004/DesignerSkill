@@ -18,7 +18,7 @@ import { run, runSync, which, version, cmp, syncRepo, pullSelf, head, repoDirFor
 import { HOSTS, CANON, ALWAYS_CLEAN, NATIVE, detectHosts } from "./lib/hosts.mjs";
 import { upsertJson, upsertToml, upsertClaude, removeJson, removeToml, removeClaude } from "./lib/mcp.mjs";
 
-export const ENGINE_VERSION = "1.0.0";
+export const ENGINE_VERSION = "1.1.0";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 
@@ -39,6 +39,7 @@ for (let i = 0; i < argv.length; i++) {
 if (flags.quiet || flags.all) flags.yes = true;
 if (flags.skipmodules) flags.skip = flags.skipmodules;
 if (flags.skipsources) flags["skip-sources"] = flags.skipsources;
+if (flags.noself) flags["no-pull"] = true;
 const cmd = (positional[0] || "install").toLowerCase();
 const list = (v) => (typeof v === "string" ? v.split(/[,\s]+/).map((s) => s.trim()).filter(Boolean) : []);
 if (flags["no-color"]) process.env.NO_COLOR = "1";
@@ -204,7 +205,7 @@ async function install({ reuse = false } = {}) {
   if (!saved && prev && interactive && !flags.hosts && !flags.only) saved = await ui.confirm({ title: S.reuse, yes: true, lang });
   let pickedHosts, pickedComps;
   const comps = (M.components || []).map((cm) => ({ ...cm, avail: componentAvailability(cm) }));
-  const recommended = comps.filter((cm) => cm.avail.ok && (cm.recommended === "ifLocal" ? Boolean(lookup(cm.useLocal)) : cm.recommended !== false)).map((cm) => cm.id);
+  const recommended = comps.filter((cm) => cm.avail.ok && (cm.recommended === "ifLocal" ? Boolean(lookup(cm.useLocal)) : cm.recommended === "ifInstalled" ? allReceipts().some((x) => x.id === cm.id) : cm.recommended !== false)).map((cm) => cm.id);
   if (saved) {
     pickedHosts = (prev.hosts || []).filter((h) => HOSTS[h]);
     // hosts installed after the last run: on, like a fresh install would do
@@ -399,10 +400,13 @@ async function installRepo(cm, depSkills) {
 }
 
 // another skillkit product (e.g. game-developer needs designer): reuse its install if present, else fetch it and run its installer
+// products can point at each other (game-developer ⇄ game-launch-strategist): SKILLKIT_CHAIN stops the loop
+const CHAIN = (process.env.SKILLKIT_CHAIN || "").split(",").filter(Boolean);
 async function installNested(cm) {
   const label = T(cm.label);
   const existing = allReceipts().find((x) => x.id === cm.id);
   await ui.task(label, async (t) => {
+    if (CHAIN.includes(cm.id)) return { state: "skip", note: lang === "it" ? "già in installazione" : "already being installed" };
     if (DRY) return { note: cm.repo };
     let root = existing?.repo && exists(path.join(existing.repo, "skillkit.json")) ? existing.repo : null;
     if (!root) {
@@ -414,7 +418,7 @@ async function installNested(cm) {
     }
     const args = [path.join(root, "installer", "install.mjs"), "install", "--yes", "--json", "--hosts", ctx.hosts.join(",")];
     if (existing) args.push("--reuse");
-    const r = await run(process.execPath, args, { onLine: () => t.update(lang === "it" ? `installer di ${cm.id}` : `${cm.id} installer`) });
+    const r = await run(process.execPath, args, { env: { SKILLKIT_CHAIN: [...CHAIN, M.id].join(",") }, onLine: () => t.update(lang === "it" ? `installer di ${cm.id}` : `${cm.id} installer`) });
     const sub = readJson(path.join(root, "skillkit.json")) || {};
     let note = [sub.version && `v${sub.version}`, head(root), tilde(root)].filter(Boolean).join(` ${g.dot} `);
     try {

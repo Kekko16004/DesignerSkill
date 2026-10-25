@@ -54,12 +54,15 @@ const DEFAULT_IGNORE = new Set([".git", "node_modules", "__pycache__", ".variant
 // Copy src into dest so that dest ends up identical to src (minus ignored names).
 // Built next to dest and swapped in; falls back to an in-place overwrite when the folder is locked (Windows).
 export function mirror(src, dest, { ignore = [], keep = [] } = {}) {
-  const skip = new Set([...DEFAULT_IGNORE, ...ignore]);
+  const skip = new Set([...DEFAULT_IGNORE, ...ignore.filter((x) => !x.includes("*"))]);
+  // "*.bak" style patterns match a file or folder name anywhere in the tree
+  const globs = ignore.filter((x) => x.includes("*")).map((x) => new RegExp("^" + x.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$", "i"));
+  const hit = (x) => skip.has(x) || globs.some((re) => re.test(x));
   const filter = (s) => {
     const rel = path.relative(src, s);
     if (!rel) return true;
     const parts = rel.split(path.sep);
-    return !parts.some((x) => skip.has(x)) && !skip.has(rel.replace(/\\/g, "/"));
+    return !parts.some(hit) && !skip.has(rel.replace(/\\/g, "/"));
   };
   const tmp = dest + ".skillkit-new";
   removeTree(tmp);

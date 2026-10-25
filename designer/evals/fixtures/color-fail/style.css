@@ -1,0 +1,7 @@
+/* designer lint fixture: color rules. Expected PATCH (color). */
+:root { --ink: #1c1917; --paper: #faf7f2; --brand: #0f172a; }
+.banner { background: linear-gradient(120deg, oklch(55% 0.2 300), oklch(70% 0.18 350)); }
+.title { background-image: linear-gradient(90deg, #c2410c, #b45309); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.card { background: #ffffff; color: #000; }
+.cta { box-shadow: 0 0 40px rgba(56, 189, 248, 0.6); }
+.hero::before { content: ""; position: absolute; inset: 0; filter: blur(80px); background: var(--brand); }

@@ -1,0 +1,10 @@
+/* designer lint fixture: motion rules. Expected PATCH (motion). */
+:root { --ink: #1f1b16; --paper: #f1ebe0; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 400ms ease, transform 400ms ease; }
+.reveal.in-view { opacity: 1; transform: none; }
+.panel-toggle { transition: all 200ms ease; }
+.drawer { transition: height 300ms ease; }
+.link { transition: box-shadow 150ms ease; }
+.link:focus-visible { box-shadow: 0 0 0 3px var(--ink); }
+.spinner { animation: grow 1s linear infinite; }
+@keyframes grow { from { width: 0; } to { width: 40px; } }

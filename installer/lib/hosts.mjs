@@ -38,6 +38,7 @@ export const HOSTS = {
     label: "Antigravity", detect: [H(".gemini", "antigravity"), H(".gemini", "config"), H(".antigravity")],
     link: [H(".gemini", "config", "skills")],             // the only folder app, IDE and CLI all load
     clean: [H(".gemini", "antigravity", "skills"), H(".gemini", "antigravity", "global_skills"), H(".antigravity", "skills"), H(".gemini", "antigravity-cli", "skills")],
+    cleanCommands: [H(".gemini", "config", "global_workflows")],   // old installers wrote the slash command here too: a second entry next to the skill
     mcp: [{ kind: "json", format: "mcpServers", file: H(".gemini", "config", "mcp_config.json") }],
   },
   cursor: {

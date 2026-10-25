@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- designer lint fixture: Vercel a11y rules. Reported, never counted: expected PASS with [V] hits. -->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+:root { --ink: #ece6dc; --paper: #15120f; --accent: #d08a4a; --font-display: "Gloock", serif; --font-body: "Literata", serif; }
+html, body { overflow-x: clip; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); }
+.field input { outline: none; }
+</style>
+</head>
+<body>
+<section>
+  <h1>Night ferry tickets</h1>
+  <img src="ferry.jpg">
+  <div class="tile" onclick="openTicket()">Tonight, 22:40</div>
+  <button type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12"/></svg></button>
+  <div class="field"><input type="email" onpaste="return false"></div>
+  <p>Loading...</p>
+</section>
+</body>
+</html>

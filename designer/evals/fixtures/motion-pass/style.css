@@ -1,0 +1,14 @@
+/* designer lint fixture: motion done right. MUST PASS with zero hits. */
+:root { --ink: #1f1b16; --paper: #f1ebe0; --dur: 180ms; --ease: cubic-bezier(0.2, 0.8, 0.2, 1); }
+.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity 400ms var(--ease), transform 400ms var(--ease); }
+.js .reveal.in-view { opacity: 1; transform: none; }
+.panel-toggle { transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+.drawer { transform-origin: top; transition: transform 300ms var(--ease); }
+.link:hover { color: var(--ink); }
+.link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.spinner { animation: turn 1s linear infinite; }
+@keyframes turn { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; }
+  .panel-toggle, .drawer, .js .reveal { transition: none; }
+}
