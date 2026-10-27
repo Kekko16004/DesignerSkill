@@ -81,8 +81,12 @@ When a tool is available, ask the user **once**, with the structured question to
   2. Wrap each image in a variant page: a full-bleed `<img>` and the direction name as a caption.
   3. Show them as a Variant Studio round (`--kind page --viewports desktop`) and wait for the pick.
   4. Then replicate the chosen image in HTML (§5) and show 2–3 replicas in a second round (`--parent`): faithful, tighter and bolder interpretations.
+  5. **Image first, HTML after — never both at once.** On this route no HTML variant exists before the image pick: the first round is images only. HTML is written only for the chosen image (step 4), and only if the brief asks for HTML / an engine translation.
+  6. **One round per screen, and per role.** A screen that differs by role (a HUD for Runner, Cameraman, Control room; one per class or vehicle) is **one separate round per role**, each with its own 3–4 directions: "HUD Runner" (4 images), "HUD Cameraman" (4 images), "HUD Control room" (4 images). Never one image that shows every role together, and never one round that mixes roles. The user may mix directions across roles; keep the shared tokens so any mix stays one family.
+  7. **If the user says to use the image tool** ("usa Canva", "use Firefly"), the route is `concept` for **every** screen, not only the key one. If the user asks for HTML only, the route is (b) direct: no images.
+  8. **Scope: mode `game` only.** Websites, apps, dashboards and FiveM never use this image-first loop; they keep their own flow (step 6 of SKILL.md).
 - **(b) Direct.** The usual step 6: 3–8 HTML variants, one per direction, from the `build` briefs.
-- **(c) Both.** Images for the key screen (usually the main menu or the HUD), direct variants for the rest, in the same visual language.
+- **(c) Both.** Images for the key screen (usually the main menu or the HUD), direct variants for the rest, in the same visual language. The key screens follow every rule of (a): images first, one round per role.
 - **No tool available** → (b) without asking.
 - **Called as a worker by another skill** (game-developer, game-launch-strategist, any subagent): never ask. The parent asked the user at its lock and passes `UI_ROUTE=concept|direct|both` in the brief (or `ui_route` in `DECISIONI.md` / the GDD). With no route given, use (b). If the route is `concept` or `both` and no tool is reachable from the worker, build (b) and write `concept route skipped: no image tool in worker` in the gate file, so the parent can generate the images itself and send them back.
 - **FiveM** → always (b), and simple: a per-screen mix of game and web simplicity (HUD ~85/15 game, bank ~30/70 web), judged on what is asked. No genre art direction, no slots, no image generation ([fivem-nui.md](fivem-nui.md)).
